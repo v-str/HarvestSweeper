@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.25)
+project (harvest_sweeper)
 
 cmake_host_system_information(RESULT OS_NAME
                               QUERY OS_NAME)
 
 if (NOT ${OS_NAME} MATCHES "Linux")
-    message(FATAL_ERROR "Сборка возможна только в Linux-like системах")
+    message(FATAL_ERROR "Сборка возможна только в Linux-based системах")
 endif()
-
-project (harvest_sweeper)
 
 file(GLOB SOURCES *.cpp)
 file(GLOB HEADERS *.h)

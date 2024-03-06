@@ -1,3 +1,5 @@
 #include <iostream>
 
-int main() { std::cout << "Harvest Sweeper at your service!" << std::endl; }
+int main() {
+  std::cout << "Сборщик файловой системы к вашим услугам!" << std::endl;
+}

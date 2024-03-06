@@ -1,3 +1,0 @@
-/home/ace/Private/GitVerse_projects/HarvestSweeper/build/CMakeFiles/harvest_sweeper.dir
-/home/ace/Private/GitVerse_projects/HarvestSweeper/build/CMakeFiles/edit_cache.dir
-/home/ace/Private/GitVerse_projects/HarvestSweeper/build/CMakeFiles/rebuild_cache.dir

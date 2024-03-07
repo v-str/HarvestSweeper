@@ -8,7 +8,7 @@ if (NOT ${OS_NAME} MATCHES "Linux")
     message(FATAL_ERROR "Сборка возможна только в Linux-based системах")
 endif()
 
-file(GLOB SOURCES *.cpp)
-file(GLOB HEADERS *.h)
+file(GLOB_RECURSE SOURCES sources/*.cpp)
+file(GLOB_RECURSE HEADERS sources/*.hpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

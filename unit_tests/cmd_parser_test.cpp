@@ -2,11 +2,11 @@
 
 #include "cmd_parser.hpp"
 
-TEST(CmdParserTest, ConstructorTest) {
+TEST(CmdParserTest, CheckCtorArgs) {
   int argc = 2;
   const char *argv[] = {"object_list_path", "output_dir_name"};
 
   CmdParser cmd_parser(argc, argv);
 
-  EXPECT_EQ(cmd_parser.isArgumentsValid(), true);
+  EXPECT_EQ(cmd_parser.isArgumentsValid(), false);
 }

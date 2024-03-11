@@ -20,4 +20,4 @@ list(APPEND SOURCES_ALL ${SOURCES_TEST} ${SOURCES})
 list(APPEND HEADERS_ALL ${HEADERS_TEST} ${HEADERS})
 
 add_executable(${PROJECT_NAME}_unit_test ${SOURCES_ALL} ${HEADERS_ALL})
-target_link_libraries(${PROJECT_NAME}_unit_test gmock)
+target_link_libraries(${PROJECT_NAME}_unit_test gmock Boost::program_options)

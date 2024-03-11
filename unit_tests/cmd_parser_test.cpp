@@ -8,5 +8,5 @@ TEST(CmdParserTest, ConstructorTest) {
 
   CmdParser cmd_parser(argc, argv);
 
-  EXPECT_EQ(1, 1);
+  EXPECT_EQ(cmd_parser.isArgumentsValid(), true);
 }

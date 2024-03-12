@@ -11,12 +11,15 @@
 namespace po = boost::program_options;
 
 const string kDefaultOutputDirName = "final.tree";
+const string kInputFileOptionName = "--input-file";
+const string kOutputDirOptionName = "--output-dir";
 
 CmdParser::CmdParser(int argc, char **argv) {
 
-  string description_string = format(
-      "Корректный вызов: {} --input-file /full/path --output-dir /full/path",
-      argv[0]);
+  string description_string =
+      format("Корректный вызов: {} {} \"full path to "
+             "file\" {} \"full path to output dir\"",
+             argv[0], kInputFileOptionName, kOutputDirOptionName);
 
   po::options_description description(description_string);
   try {

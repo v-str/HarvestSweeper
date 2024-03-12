@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
+
 using namespace std;
 
 class CmdParser {
@@ -19,6 +23,8 @@ private:
   bool m_isInputFileValid = false;
   string m_inputFileName;
   string m_outputDirName;
+
+  po::options_description m_description;
 };
 
 #endif // CMD_PARSER_HPP

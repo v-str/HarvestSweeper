@@ -14,27 +14,27 @@ const string kDefaultOutputDirName = "final.tree";
 const string kInputFileOptionName = "--input-file";
 const string kOutputDirOptionName = "--output-dir";
 
-CmdParser::CmdParser(int argc, char **argv) {
+const string kDescriptionString =
+    format("Корректный вызов: ./program {} \"full path to "
+           "file\" {} \"full path to output dir\"",
+           kInputFileOptionName, kOutputDirOptionName);
 
-  string description_string =
-      format("Корректный вызов: {} {} \"full path to "
-             "file\" {} \"full path to output dir\"",
-             argv[0], kInputFileOptionName, kOutputDirOptionName);
+CmdParser::CmdParser(int argc, char **argv)
+    : m_description(kDescriptionString) {
 
-  po::options_description description(description_string);
   try {
 
-    description.add_options()("input-file", po::value<string>(),
-                              "Путь до JSON-файла с объектами")(
+    m_description.add_options()("input-file", po::value<string>(),
+                                "Путь до JSON-файла с объектами")(
         "output-dir", po::value<string>(), "Путь до выходной директрии");
 
     if (argc == 1 || argc > 5) {
-      std::cout << description_string << std::endl;
+      std::cout << kDescriptionString << std::endl;
       return;
     }
 
     po::variables_map variablesMap;
-    po::store(po::parse_command_line(argc, argv, description), variablesMap,
+    po::store(po::parse_command_line(argc, argv, m_description), variablesMap,
               true);
     po::notify(variablesMap);
 
@@ -55,6 +55,6 @@ CmdParser::CmdParser(int argc, char **argv) {
 
   } catch (const po::error &e) {
     cout << e.what() << endl;
-    cout << description_string << endl;
+    cout << kDescriptionString << endl;
   }
 }

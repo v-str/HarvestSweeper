@@ -4,7 +4,7 @@
 
 TEST(CmdParserTest, CheckHelpRequested) {
   int ac = 2;
-  const char *av[] = {"coverage_program", "--help"};
+  char *av[] = {"coverage_program", "--help"};
 
   CmdParser parser(ac, av);
 
@@ -13,7 +13,7 @@ TEST(CmdParserTest, CheckHelpRequested) {
 
 TEST(CmdParserTest, IsArgumentsInvalid) {
   int ac = 3;
-  const char *av[] = {"coverage_program", "unvalid_arg1", "unvalid_arg2"};
+  char *av[] = {"coverage_program", "unvalid_arg1", "unvalid_arg2"};
 
   CmdParser parser(ac, av);
 
@@ -22,8 +22,8 @@ TEST(CmdParserTest, IsArgumentsInvalid) {
 
 TEST(CmdParserTest, IsArgumentsValid) {
   int ac = 5;
-  const char *av[] = {"coverage_program", "--input-file", "test_file",
-                      "--output-dir", "test_dir"};
+  char *av[] = {"coverage_program", "--input-file", "test_file", "--output-dir",
+                "test_dir"};
 
   CmdParser parser(ac, av);
 
@@ -32,11 +32,20 @@ TEST(CmdParserTest, IsArgumentsValid) {
 
 TEST(CmdParserTest, GetCmdArgsFromParser) {
   int ac = 5;
-  const char *av[] = {"coverage_program", "--input-file", "test_file",
-                      "--output-dir", "test_dir"};
+  char *av[] = {"coverage_program", "--input-file", "test_file", "--output-dir",
+                "test_dir"};
 
   CmdParser parser(ac, av);
 
   EXPECT_EQ(parser.getInputFileName(), "test_file");
   EXPECT_EQ(parser.getOutputDirName(), "test_dir");
+}
+
+TEST(CmdParserTest, CatchBoostException) {
+  int ac = 2;
+  char *av[] = {"coverage_program", "--xyz"};
+
+  CmdParser parser(ac, av);
+
+  EXPECT_EQ(1, 1);
 }

@@ -8,7 +8,7 @@ using namespace std;
 class CmdParser {
 public:
   CmdParser() = delete;
-  CmdParser(int argc, const char **argv);
+  CmdParser(int argc, char **argv);
   ~CmdParser() = default;
 
   bool isArgumentsValid() const { return m_isArgumentsValid; };

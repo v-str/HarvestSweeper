@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]) {
   CmdParser cmd(argc, argv);
 
-  if (cmd.isArgumentsValid()) {
+  if (cmd.isInputFileNameValid()) {
     std::cout << cmd.getInputFileName() << std::endl;
     std::cout << cmd.getOutputDirName() << std::endl;
   }

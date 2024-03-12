@@ -11,12 +11,12 @@ public:
   CmdParser(int argc, char **argv);
   ~CmdParser() = default;
 
-  bool isArgumentsValid() const { return m_isArgumentsValid; };
+  bool isInputFileNameValid() const { return m_isInputFileValid; };
   string getInputFileName() const { return m_inputFileName; };
   string getOutputDirName() const { return m_outputDirName; };
 
 private:
-  bool m_isArgumentsValid = false;
+  bool m_isInputFileValid = false;
   string m_inputFileName;
   string m_outputDirName;
 };

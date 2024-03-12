@@ -4,31 +4,31 @@
 
 TEST(CmdParserTest, IsArgumentsInvalid) {
   int ac = 3;
-  char *av[] = {"coverage_program", "unvalid_arg1", "unvalid_arg2"};
+  char *av[] = {"coverage_program", "invalid_arg1", "invalid_arg2"};
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(parser.isArgumentsValid(), false);
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
 TEST(CmdParserTest, IsArgumentsInvalidCount) {
   int ac = 6;
-  char *av[] = {"coverage_program", "unvalid_arg1", "unvalid_arg2",
-                "unvalid_arg3",     "unvalid_arg4", "unvalid_arg5"};
+  char *av[] = {"coverage_program", "invalid_arg1", "invalid_arg2",
+                "invalid_arg3",     "invalid_arg4", "invalid_arg5"};
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(parser.isArgumentsValid(), false);
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST(CmdParserTest, IsArgumentsValid) {
+TEST(CmdParserTest, isInputFileNameValid) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "test_file", "--output-dir",
                 "test_dir"};
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(parser.isArgumentsValid(), true);
+  EXPECT_EQ(parser.isInputFileNameValid(), true);
 }
 
 TEST(CmdParserTest, GetCmdArgsFromParser) {

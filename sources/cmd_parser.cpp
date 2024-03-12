@@ -41,7 +41,7 @@ CmdParser::CmdParser(int argc, char **argv) {
     if (variablesMap.count("input-file")) {
       m_inputFileName = variablesMap["input-file"].as<string>();
       if (filesystem::exists(m_inputFileName)) {
-        m_isArgumentsValid = true;
+        m_isInputFileValid = true;
       } else {
         std::cout << "Файл " << m_inputFileName << " не найден" << std::endl;
       }

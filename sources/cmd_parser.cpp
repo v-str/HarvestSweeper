@@ -23,7 +23,7 @@ CmdParser::CmdParser(int argc, const char **argv) {
   po::notify(variablesMap);
 
   if (variablesMap.count("help")) {
-    m_isHelpRequested = true;
+    cout << description << endl;
     return;
   }
 

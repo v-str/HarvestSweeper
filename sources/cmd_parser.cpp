@@ -10,7 +10,7 @@
 
 namespace po = boost::program_options;
 
-const string kDefaultOutputDirName = "final.tree";
+const string kDefaultTreeName = "final.tree";
 const string kInputFileOptionName = "--input-file";
 const string kOutputDirOptionName = "--output-dir";
 
@@ -22,39 +22,47 @@ const string kDescriptionString =
 CmdParser::CmdParser(int argc, char **argv)
     : m_description(kDescriptionString) {
 
+  m_description.add_options()("input-file", po::value<string>(),
+                              "Путь до JSON-файла с объектами")(
+      "output-dir", po::value<string>(), "Путь до выходной директрии");
+
+  parseOptionsInternal(argc, argv);
+}
+
+void CmdParser::parseOptionsInternal(int argc, char **argv) {
+  if (argc < 3) {
+    return;
+  }
+
+  po::store(po::parse_command_line(argc, argv, m_description), m_variablesMap);
+  po::notify(m_variablesMap);
+
   try {
-
-    m_description.add_options()("input-file", po::value<string>(),
-                                "Путь до JSON-файла с объектами")(
-        "output-dir", po::value<string>(), "Путь до выходной директрии");
-
-    if (argc == 1 || argc > 5) {
-      std::cout << kDescriptionString << std::endl;
-      return;
-    }
-
-    po::variables_map variablesMap;
-    po::store(po::parse_command_line(argc, argv, m_description), variablesMap,
-              true);
-    po::notify(variablesMap);
-
-    if (variablesMap.count("input-file")) {
-      m_inputFileName = variablesMap["input-file"].as<string>();
-      if (filesystem::exists(m_inputFileName)) {
-        m_isInputFileValid = true;
-      } else {
-        std::cout << "Файл " << m_inputFileName << " не найден" << std::endl;
-      }
-    }
-
-    if (variablesMap.count("output-dir")) {
-      m_outputDirName = variablesMap["output-dir"].as<string>();
-    } else {
-      m_outputDirName = kDefaultOutputDirName;
-    }
-
+    parseInputFileName();
+    parseOutputDirName();
   } catch (const po::error &e) {
-    cout << e.what() << endl;
-    cout << kDescriptionString << endl;
+    std::cerr << e.what() << std::endl;
+  }
+}
+
+void CmdParser::parseInputFileName() {
+  if (m_variablesMap.count("input-file")) {
+    m_inputFileName = m_variablesMap["input-file"].as<string>();
+    if (filesystem::exists(m_inputFileName)) {
+      m_isInputFileNameValid = true;
+    }
+  }
+}
+
+void CmdParser::parseOutputDirName() {
+  if (m_variablesMap.count("output-dir")) {
+    m_outputDirName = m_variablesMap["output-dir"].as<string>();
+    if (m_outputDirName.back() != '/') {
+      m_outputDirName += '/';
+    }
+    m_outputDirName += kDefaultTreeName;
+  } else {
+    m_outputDirName = getenv("HOME");
+    m_outputDirName += "/" + kDefaultTreeName;
   }
 }

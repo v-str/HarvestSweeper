@@ -39,7 +39,7 @@ TEST(CmdParserTest, GetCmdArgsFromParser) {
   CmdParser parser(ac, av);
 
   EXPECT_EQ(parser.getInputFileName(), "test_file");
-  EXPECT_EQ(parser.getOutputDirName(), "test_dir");
+  EXPECT_EQ(parser.getOutputDirName(), "test_dir/final.tree");
 }
 
 TEST(CmdParserTest, CatchBoostException) {
@@ -48,7 +48,7 @@ TEST(CmdParserTest, CatchBoostException) {
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(1, 1);
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
 TEST(CmdParserTest, NoArgumentsPassed) {
@@ -57,7 +57,7 @@ TEST(CmdParserTest, NoArgumentsPassed) {
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(1, 1);
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
 TEST(CmdParserTest, InputFileNotFound) {
@@ -67,5 +67,5 @@ TEST(CmdParserTest, InputFileNotFound) {
 
   CmdParser parser(ac, av);
 
-  EXPECT_EQ(1, 1);
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
 }

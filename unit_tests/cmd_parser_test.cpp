@@ -29,3 +29,14 @@ TEST(CmdParserTest, IsArgumentsValid) {
 
   EXPECT_EQ(parser.isArgumentsValid(), true);
 }
+
+TEST(CmdParserTest, GetCmdArgsFromParser) {
+  int ac = 5;
+  const char *av[] = {"coverage_program", "--input-file", "test_file",
+                      "--output-dir", "test_dir"};
+
+  CmdParser parser(ac, av);
+
+  EXPECT_EQ(parser.getInputFileName(), "test_file");
+  EXPECT_EQ(parser.getOutputDirName(), "test_dir");
+}

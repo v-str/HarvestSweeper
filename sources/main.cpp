@@ -1,5 +1,10 @@
-#include <iostream>
+
+
+#include "cmd_parser.hpp"
 
 int main(int argc, char *argv[]) {
-  std::cout << "Сборщик файловой системы к вашим услугам!" << std::endl;
+
+  const char *const_argv = const_cast<const char *>(*argv);
+
+  CmdParser cmd(argc, &const_argv);
 }

@@ -7,7 +7,6 @@
 
 #include <boost/program_options.hpp>
 
-using namespace std;
 namespace po = boost::program_options;
 
 CmdParser::CmdParser(int argc, const char **argv) {
@@ -19,7 +18,8 @@ CmdParser::CmdParser(int argc, const char **argv) {
       "output-dir", po::value<string>(), "Путь до выходной директрии");
 
   po::variables_map variablesMap;
-  po::store(po::parse_command_line(argc, argv, description), variablesMap);
+  po::store(po::parse_command_line(argc, argv, description), variablesMap,
+            true);
   po::notify(variablesMap);
 
   if (variablesMap.count("help")) {
@@ -28,7 +28,9 @@ CmdParser::CmdParser(int argc, const char **argv) {
   }
 
   if (variablesMap.count("input-file") && variablesMap.count("output-dir")) {
-    if (filesystem::exists(variablesMap["input-file"].as<string>())) {
+    m_inputFileName = variablesMap["input-file"].as<string>();
+    m_outputDirName = variablesMap["output-dir"].as<string>();
+    if (filesystem::exists(m_inputFileName)) {
       m_isArgumentsValid = true;
     }
   }

@@ -1,4 +1,4 @@
-message(STATUS "inside tests...")
+message("-- ${Blue}CMake unit-tests module${ColorReset}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -25,8 +25,8 @@ list(APPEND HEADERS_ALL ${HEADERS_TEST} ${HEADERS})
 
 add_executable(${PROJECT_NAME}_unit_test ${SOURCES_ALL} ${HEADERS_ALL})
 target_link_libraries(${PROJECT_NAME}_unit_test
+                        ${Boost_PROGRAM_OPTIONS_LIBRARY}
                         gmock
-                        Boost::program_options
                         gcov)
 
 add_custom_target(coverage
@@ -36,5 +36,5 @@ add_custom_target(coverage
             --exclude ${CMAKE_SOURCE_DIR}/unit_test/*
             -o coverage_report.html
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage
-    COMMENT "Генерирую отчет о покрытии тестами..."
+    COMMENT "Generate coverage report..."
 )

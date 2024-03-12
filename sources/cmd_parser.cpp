@@ -3,32 +3,33 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <boost/program_options.hpp>
 
+using namespace std;
 namespace po = boost::program_options;
 
 CmdParser::CmdParser(int argc, const char **argv) {
-  po::options_description desc("Доступные опции");
 
-  desc.add_options()("help,h", "Показать справку")(
-      "object_list", po::value<std::string>(), "JSON-файл с объектами")(
-      "output_dir", po::value<std::string>(), "Куда сохранить результат");
+  po::options_description description("Доступные опции");
 
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, desc), vm);
+  description.add_options()("help", "Показать справку")(
+      "input-file", po::value<string>(), "Путь до JSON-файла с объектами")(
+      "output-dir", po::value<string>(), "Путь до выходной директрии");
 
-  if (vm.count("help")) {
+  po::variables_map variablesMap;
+  po::store(po::parse_command_line(argc, argv, description), variablesMap);
+  po::notify(variablesMap);
+
+  if (variablesMap.count("help")) {
     m_isHelpRequested = true;
+    return;
   }
 
-  if (vm.count("object_list")) {
-
-  }
-
-  if (vm.count("output_dir")) {
-    
+  if (variablesMap.count("input-file") && variablesMap.count("output-dir")) {
+    if (filesystem::exists(variablesMap["input-file"].as<string>())) {
+      m_isArgumentsValid = true;
+    }
   }
 }
-
-CmdParser::~CmdParser() {}

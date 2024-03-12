@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.20)
 project (harvest_sweeper)
 
+string(ASCII 27 Esc)
+set(ColourReset "${Esc}[m")
+set(Blue "${Esc}[34m")
+
 cmake_host_system_information(RESULT OS_NAME
                               QUERY OS_NAME)
 
 if (NOT ${OS_NAME} MATCHES "Linux")
     message(FATAL_ERROR "Сборка возможна только в Linux-based системах")
 endif()
+
+set(CMAKE_BUILD_TYPE Debug)
 
 enable_testing()
 

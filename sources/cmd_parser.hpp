@@ -3,8 +3,9 @@
 
 class CmdParser {
 public:
+  CmdParser() = delete;
   CmdParser(int argc, const char **argv);
-  ~CmdParser();
+  ~CmdParser() = default;
 
   bool isArgumentsValid() const { return m_isArgumentsValid; };
   bool isHelpRequested() const { return m_isHelpRequested; };

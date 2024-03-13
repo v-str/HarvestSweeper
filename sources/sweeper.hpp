@@ -1,13 +1,20 @@
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
+#include <string>
+
+using std::string;
+
 class Sweeper {
 public:
-  Sweeper();
+  Sweeper(const string &filePath, const string &outputDir);
   ~Sweeper();
 
+  void sweep();
+
 private:
-  int test_var_;
+  string m_filePath;
+  string m_outputDir;
 };
 
 #endif // SWEEPER_HPP

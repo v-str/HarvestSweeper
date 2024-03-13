@@ -66,3 +66,5 @@ void CmdParser::parseOutputDirName() {
     m_outputDirName += "/" + kDefaultTreeName;
   }
 }
+
+string CmdParser::getDescription() const { return kDescriptionString; }

@@ -8,5 +8,7 @@ int main(int argc, char *argv[]) {
   if (cmd.isInputFileNameValid()) {
     std::cout << cmd.getInputFileName() << std::endl;
     std::cout << cmd.getOutputDirName() << std::endl;
+  } else {
+    std::cout << cmd.getDescription() << std::endl;
   }
 }

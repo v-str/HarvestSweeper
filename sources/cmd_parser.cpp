@@ -19,14 +19,11 @@ const string kDescriptionString =
            "file\" {} \"full path to output dir\"",
            kInputFileOptionName, kOutputDirOptionName);
 
-CmdParser::CmdParser(int argc, char **argv)
-    : m_description(kDescriptionString) {
+CmdParser::CmdParser() : m_description(kDescriptionString) {
 
   m_description.add_options()("input-file", po::value<string>(),
                               "Путь до JSON-файла с объектами")(
       "output-dir", po::value<string>(), "Путь до выходной директрии");
-
-  parseOptionsInternal(argc, argv);
 }
 
 void CmdParser::parseOptionsInternal(int argc, char **argv) {
@@ -37,12 +34,8 @@ void CmdParser::parseOptionsInternal(int argc, char **argv) {
   po::store(po::parse_command_line(argc, argv, m_description), m_variablesMap);
   po::notify(m_variablesMap);
 
-  try {
-    parseInputFileName();
-    parseOutputDirName();
-  } catch (const po::error &e) {
-    std::cerr << e.what() << std::endl;
-  }
+  parseInputFileName();
+  parseOutputDirName();
 }
 
 void CmdParser::parseInputFileName() {
@@ -68,3 +61,11 @@ void CmdParser::parseOutputDirName() {
 }
 
 string CmdParser::getDescription() const { return kDescriptionString; }
+
+void CmdParser::parse(int argc, char **argv) {
+  try {
+    parseOptionsInternal(argc, argv);
+  } catch (const po::error &e) {
+    std::cerr << e.what() << std::endl;
+  }
+}

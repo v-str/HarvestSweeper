@@ -11,9 +11,10 @@ using namespace std;
 
 class CmdParser {
 public:
-  CmdParser() = delete;
-  CmdParser(int argc, char **argv);
+  CmdParser();
   ~CmdParser() = default;
+
+  void parse(int argc, char **argv);
 
   bool isInputFileNameValid() const { return m_isInputFileNameValid; };
   string getDescription() const;

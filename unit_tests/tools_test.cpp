@@ -76,7 +76,14 @@ TEST_F(LoggerTest, errorTest) {
             getExpectedString(Clr::red, "Error", "This is a error message"));
 }
 
-TEST(ToolsTest, isJsonFile) {
-  EXPECT_TRUE(Tools::isJsonFile("test.json"));
+TEST(ToolsTest, isJsonFileTrue) { EXPECT_TRUE(Tools::isJsonFile("test.json")); }
+
+TEST(ToolsTest, isJsonFileFalse) {
   EXPECT_FALSE(Tools::isJsonFile("test.txt"));
 }
+
+TEST(ToolsTest, isJsonFileNotExist) {
+  EXPECT_FALSE(Tools::isJsonFile("not_exist.txt"));
+}
+
+TEST(ToolsTest, EmptyFileName) { EXPECT_FALSE(Tools::isJsonFile("")); }

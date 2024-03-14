@@ -63,19 +63,13 @@ bool Tools::isJsonFile(const string &filename) {
   if (!file.is_open())
     return false;
 
-  boost::json::value json;
-
-  string rawJson;
-  string line;
-  while (getline(file, line)) {
-    rawJson += line;
-  }
+  boost::json::value jsonFile;
 
   try {
-    json = boost::json::parse(rawJson);
+    file >> jsonFile;
   } catch (const std::exception &error) {
     Logger::error("Ошибка парсинга JSON файла", error.what());
   }
 
-  return json.is_object();
+  return jsonFile.is_object();
 }

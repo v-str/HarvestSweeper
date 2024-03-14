@@ -20,9 +20,6 @@ constexpr string embrace(LogColor clr, const string &text) {
   case LogColor::RED:
     colorCode = "\033[1;31m";
     break;
-
-  default:
-    break;
   }
   string resetCode = "\033[0m";
 

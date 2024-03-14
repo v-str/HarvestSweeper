@@ -12,9 +12,13 @@ public:
 
   void sweep();
 
+  bool isParamsValid() const;
+
 private:
   string m_filePath;
   string m_outputDir;
+
+  bool m_isParamsValid = false;
 };
 
 #endif // SWEEPER_HPP

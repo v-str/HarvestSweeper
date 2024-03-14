@@ -15,6 +15,8 @@ public:
   bool isParamsValid() const;
 
 private:
+  void checkParams();
+
   string m_filePath;
   string m_outputDir;
 

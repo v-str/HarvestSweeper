@@ -3,7 +3,10 @@
 
 #include <string>
 
-using std::string;
+#include <boost/json.hpp>
+
+using namespace std;
+namespace json = boost::json;
 
 enum class LogColor { YELLOW, GREEN, BLUE, RED };
 
@@ -20,7 +23,7 @@ private:
 
 class Tools {
 public:
-  static bool isJsonFile(const string &filename);
+  static json::value getJsonObject(const string &filename);
 };
 
 #endif // TOOLS_H

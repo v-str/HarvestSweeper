@@ -4,10 +4,6 @@
 #include <fstream>
 #include <iostream>
 
-#include <boost/json.hpp>
-
-using namespace std;
-
 constexpr string embrace(LogColor clr, const string &text) {
   string colorCode;
   switch (clr) {
@@ -55,21 +51,39 @@ void Logger::print(LogColor clr, const string &title, const string &body) {
   cout << format("{}: {}", embrace(clr, title), body) << endl;
 }
 
-bool Tools::isJsonFile(const string &filename) {
+json::value Tools::getJsonObject(const string &filename) {
   if (filename.empty())
-    return false;
+    return nullptr;
 
   ifstream file(filename);
   if (!file.is_open())
-    return false;
+    return nullptr;
 
-  boost::json::value jsonFile;
+  json::stream_parser parser;
+  json::error_code error;
+
+  string line;
+  while (std::getline(file, line)) {
+
+    try {
+      parser.write(line);
+    } catch (std::exception &e) {
+      Logger::error("JSON", "Error parsing JSON file: " + filename);
+      Logger::error("JSON", "Error: " + string(e.what()));
+      return nullptr;
+    }
+
+    if (error)
+      return nullptr;
+  }
+  parser.finish(error);
+
+  if (error)
+    return nullptr;
 
   try {
-    file >> jsonFile;
-  } catch (const std::exception &error) {
-    Logger::error("Ошибка парсинга JSON файла", error.what());
+    return parser.release();
+  } catch (std::exception &e) {
+    return nullptr;
   }
-
-  return jsonFile.is_object();
 }

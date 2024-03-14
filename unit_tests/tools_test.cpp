@@ -9,14 +9,14 @@ using namespace testing;
 
 enum class Clr { yellow, red, green, blue };
 
-class ToolsTest : public Test {
+class LoggerTest : public Test {
 public:
-  ToolsTest() {
+  LoggerTest() {
     m_oldBuf = cout.rdbuf();
     cout.rdbuf(m_ss.rdbuf());
   }
 
-  ~ToolsTest() { cout.rdbuf(m_oldBuf); }
+  ~LoggerTest() { cout.rdbuf(m_oldBuf); }
 
   stringstream m_ss;
   streambuf *m_oldBuf;
@@ -44,7 +44,7 @@ string getExpectedString(Clr c, const string &title, const string &body) {
   return color + title + resetCode + ": " + body + "\n";
 }
 
-TEST_F(ToolsTest, infoTest) {
+TEST_F(LoggerTest, infoTest) {
   Logger::info("Info", "This is an info message");
   string output = m_ss.str();
 
@@ -52,7 +52,7 @@ TEST_F(ToolsTest, infoTest) {
             getExpectedString(Clr::blue, "Info", "This is an info message"));
 }
 
-TEST_F(ToolsTest, warningTest) {
+TEST_F(LoggerTest, warningTest) {
   Logger::warning("Warning", "This is a warning message");
   string output = m_ss.str();
 
@@ -60,7 +60,7 @@ TEST_F(ToolsTest, warningTest) {
                                       "This is a warning message"));
 }
 
-TEST_F(ToolsTest, normalTest) {
+TEST_F(LoggerTest, normalTest) {
   Logger::normal("Normal", "This is a normal message");
   string output = m_ss.str();
 
@@ -68,10 +68,15 @@ TEST_F(ToolsTest, normalTest) {
                                       "This is a normal message"));
 }
 
-TEST_F(ToolsTest, errorTest) {
+TEST_F(LoggerTest, errorTest) {
   Logger::error("Error", "This is a error message");
   string output = m_ss.str();
 
   EXPECT_EQ(output,
             getExpectedString(Clr::red, "Error", "This is a error message"));
+}
+
+TEST(ToolsTest, isJsonFile) {
+  EXPECT_TRUE(Tools::isJsonFile("test.json"));
+  EXPECT_FALSE(Tools::isJsonFile("test.txt"));
 }

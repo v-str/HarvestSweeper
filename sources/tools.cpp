@@ -1,7 +1,10 @@
 #include "tools.hpp"
 
 #include <format>
+#include <fstream>
 #include <iostream>
+
+#include <boost/json.hpp>
 
 using namespace std;
 
@@ -50,4 +53,29 @@ void Logger::error(const string &title, const string &body) {
 
 void Logger::print(LogColor clr, const string &title, const string &body) {
   cout << format("{}: {}", embrace(clr, title), body) << endl;
+}
+
+bool Tools::isJsonFile(const string &filename) {
+  if (filename.empty())
+    return false;
+
+  ifstream file(filename);
+  if (!file.is_open())
+    return false;
+
+  boost::json::value json;
+
+  string rawJson;
+  string line;
+  while (getline(file, line)) {
+    rawJson += line;
+  }
+
+  try {
+    json = boost::json::parse(rawJson);
+  } catch (const std::exception &error) {
+    Logger::error("Ошибка парсинга JSON файла", error.what());
+  }
+
+  return json.is_object();
 }

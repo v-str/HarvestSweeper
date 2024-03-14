@@ -8,8 +8,8 @@ using namespace std;
 
 Sweeper::Sweeper(const string &filePath, const string &outputDir)
     : m_filePath(filePath), m_outputDir(outputDir) {
-      
-    }
+  checkParams();
+}
 
 Sweeper::~Sweeper() {}
 
@@ -21,6 +21,4 @@ void Sweeper::sweep() {
 
 bool Sweeper::isParamsValid() const { return m_isParamsValid; }
 
-void Sweeper::checkParams() {
-
-}
+void Sweeper::checkParams() {}

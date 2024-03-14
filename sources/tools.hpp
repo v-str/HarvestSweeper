@@ -18,4 +18,9 @@ private:
   static void print(LogColor clr, const string &title, const string &body);
 };
 
+class Tools {
+public:
+  static bool isJsonFile(const string &filename);
+};
+
 #endif // TOOLS_H

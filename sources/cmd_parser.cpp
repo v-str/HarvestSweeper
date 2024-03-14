@@ -1,23 +1,11 @@
 #include "cmd_parser.hpp"
+#include "tools.hpp"
 
 #include <filesystem>
-#include <format>
-#include <iostream>
-#include <string>
-#include <vector>
-
-#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
 const string kDefaultTreeName = "final.tree";
-const string kInputFileOptionName = "--input-file";
-const string kOutputDirOptionName = "--output-dir";
-
-const string kDescriptionString =
-    format("Корректный вызов: ./program {} \"full path to "
-           "file\" {} \"full path to output dir\"",
-           kInputFileOptionName, kOutputDirOptionName);
 
 CmdParser::CmdParser() : m_description("unused") {
 
@@ -43,6 +31,8 @@ void CmdParser::parseInputFileName() {
     m_inputFileName = m_variablesMap["input-file"].as<string>();
     if (filesystem::exists(m_inputFileName)) {
       m_isInputFileNameValid = true;
+    } else {
+      Logger::error("Ошибка", m_inputFileName + " не найден");
     }
   }
 }
@@ -64,6 +54,6 @@ void CmdParser::parse(int argc, char **argv) {
   try {
     parseOptionsInternal(argc, argv);
   } catch (const po::error &e) {
-    std::cerr << e.what() << std::endl;
+    Logger::error("Сработало исключение(CmdParser::parse)", e.what());
   }
 }

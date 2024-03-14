@@ -76,16 +76,3 @@ TEST_F(CmdParserTest, InputFileNotFound) {
 
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
-
-TEST_F(CmdParserTest, GetDescriptionIfErrors) {
-  int ac = 1;
-  char *av[] = {"coverage_program"};
-
-  parser.parse(ac, av);
-
-  if (!parser.isInputFileNameValid()) {
-    parser.getDescription();
-  }
-
-  EXPECT_EQ(parser.isInputFileNameValid(), false);
-}

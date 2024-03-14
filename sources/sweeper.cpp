@@ -1,7 +1,6 @@
 #include "sweeper.hpp"
 
-#include <format>
-#include <iostream>
+#include "tools.hpp"
 
 using namespace std;
 
@@ -11,8 +10,7 @@ Sweeper::Sweeper(const string &filePath, const string &outputDir)
 Sweeper::~Sweeper() {}
 
 void Sweeper::sweep() {
-  cout << format("Параметры получены:\n"
-                 "Файл: {}\n"
-                 "Выходная директория: {}\n",
-                 m_filePath, m_outputDir);
+  Logger::normal("Параметры получены");
+  Logger::normal("Файл", m_filePath);
+  Logger::normal("Директория для сохранения", m_outputDir);
 }

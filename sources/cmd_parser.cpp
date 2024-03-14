@@ -19,7 +19,7 @@ const string kDescriptionString =
            "file\" {} \"full path to output dir\"",
            kInputFileOptionName, kOutputDirOptionName);
 
-CmdParser::CmdParser() : m_description(kDescriptionString) {
+CmdParser::CmdParser() : m_description("unused") {
 
   m_description.add_options()("input-file", po::value<string>(),
                               "Путь до JSON-файла с объектами")(
@@ -59,8 +59,6 @@ void CmdParser::parseOutputDirName() {
     m_outputDirName += "/" + kDefaultTreeName;
   }
 }
-
-string CmdParser::getDescription() const { return kDescriptionString; }
 
 void CmdParser::parse(int argc, char **argv) {
   try {

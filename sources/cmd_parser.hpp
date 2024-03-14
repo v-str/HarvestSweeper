@@ -17,7 +17,6 @@ public:
   void parse(int argc, char **argv);
 
   bool isInputFileNameValid() const { return m_isInputFileNameValid; };
-  string getDescription() const;
   string getInputFileName() const { return m_inputFileName; };
   string getOutputDirName() const { return m_outputDirName; };
 

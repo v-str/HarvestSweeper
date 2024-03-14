@@ -1,7 +1,8 @@
-#include <iostream>
+#include <string>
 
 #include "cmd_parser.hpp"
 #include "sweeper.hpp"
+#include "tools.hpp"
 
 int main(int argc, char *argv[]) {
   CmdParser cmd;
@@ -11,6 +12,8 @@ int main(int argc, char *argv[]) {
     Sweeper sweeper(cmd.getInputFileName(), cmd.getOutputDirName());
     sweeper.sweep();
   } else {
-    std::cout << cmd.getDescription() << std::endl;
+    Logger::warning("Использование",
+                    string(argv[0]) +
+                        " --input-file filename --output-dir dirname");
   }
 }

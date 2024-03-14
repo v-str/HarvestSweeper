@@ -11,6 +11,6 @@ Sweeper::~Sweeper() {}
 
 void Sweeper::sweep() {
   Logger::normal("Параметры получены");
-  Logger::normal("Файл", m_filePath);
+  Logger::normal("\nФайл", m_filePath);
   Logger::normal("Директория для сохранения", m_outputDir);
 }

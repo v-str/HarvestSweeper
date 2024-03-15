@@ -40,6 +40,9 @@ void CmdParser::parseInputFileName() {
 void CmdParser::parseOutputDirName() {
   if (m_variablesMap.count("output-dir")) {
     m_outputDirName = m_variablesMap["output-dir"].as<string>();
+    if (m_outputDirName == "." || m_outputDirName == "./") {
+      m_outputDirName = getCurrentPath();
+    }
   } else {
     m_outputDirName = getenv("HOME");
     m_outputDirName += "/" + kDefaultTreeName;
@@ -52,4 +55,8 @@ void CmdParser::parse(int argc, char **argv) {
   } catch (const po::error &e) {
     Logger::error("Сработало исключение(CmdParser::parse)", e.what());
   }
+}
+
+string CmdParser::getCurrentPath() const {
+  return filesystem::current_path().string();
 }

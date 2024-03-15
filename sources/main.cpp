@@ -14,6 +14,6 @@ int main(int argc, char *argv[]) {
   } else {
     Logger::warning("Использование",
                     string(argv[0]) +
-                        " --input-file filename --output-dir dirname");
+                        " --input-file example.json --output-dir dirname");
   }
 }

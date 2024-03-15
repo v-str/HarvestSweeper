@@ -113,6 +113,7 @@ TEST(ToolsTest, printTestJsonFile) {
 
   vector<string> etalonVector = {"cp", "ls", "mkfs", "wget"};
 
+  // лямбда, которая проверяет что все объекты из test.json есть в etalonVector
   auto isValueInArray = [&](const string &value) {
     return ranges::any_of(
         etalonVector.begin(), etalonVector.end(),

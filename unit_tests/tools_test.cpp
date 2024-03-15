@@ -1,12 +1,17 @@
 #include <gmock/gmock.h>
 
+#include <algorithm>
 #include <boost/json.hpp>
+#include <memory>
+#include <ranges>
 #include <string>
+#include <vector>
 
 #include <tools.hpp>
 
 using namespace std;
 using namespace testing;
+namespace json = boost::json;
 
 enum class Clr { yellow, red, green, blue };
 
@@ -93,7 +98,32 @@ TEST(ToolsTest, getNullIfEmptyFileName) {
   ASSERT_THAT(Tools::getJsonObject(""), IsNull());
 }
 
-// TEST(ToolsTest, printTestJsonFile) {
-//   boost::json::value jsonObj = Tools::getJsonObject("test.txt");
+TEST(ToolsTest, printTestJsonFile) {
+  unique_ptr<json::value> jsonObjPtr = Tools::getJsonObject("test.json");
 
-// }
+  ASSERT_THAT(jsonObjPtr, NotNull());
+  ASSERT_TRUE(jsonObjPtr.get()->is_object());
+
+  auto &rootArray = jsonObjPtr.get()->at("root").as_array();
+
+  vector<json::value> valueVector;
+  copy(rootArray.begin(), rootArray.end(), back_inserter(valueVector));
+
+  auto range = valueVector | views::all;
+
+  vector<string> etalonVector = {"cp", "ls", "mkfs", "wget"};
+
+  auto isValueInArray = [&](const string &value) {
+    return ranges::any_of(
+        etalonVector.begin(), etalonVector.end(),
+        [&](const string &etalon) { return etalon == value; });
+  };
+
+  for (const auto &object : range) {
+    auto obj_pairs = object.as_object() | views::all;
+
+    for (const auto &[key, value] : obj_pairs) {
+      EXPECT_TRUE(isValueInArray(key));
+    }
+  }
+}

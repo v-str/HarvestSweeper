@@ -5,7 +5,7 @@
 
 namespace po = boost::program_options;
 
-const string kDefaultTreeName = "final.tree";
+const string kDefaultTreeName = "swept.tree";
 
 CmdParser::CmdParser() : m_description("unused") {
 
@@ -40,10 +40,6 @@ void CmdParser::parseInputFileName() {
 void CmdParser::parseOutputDirName() {
   if (m_variablesMap.count("output-dir")) {
     m_outputDirName = m_variablesMap["output-dir"].as<string>();
-    if (m_outputDirName.back() != '/') {
-      m_outputDirName += '/';
-    }
-    m_outputDirName += kDefaultTreeName;
   } else {
     m_outputDirName = getenv("HOME");
     m_outputDirName += "/" + kDefaultTreeName;

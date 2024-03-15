@@ -46,7 +46,7 @@ TEST_F(CmdParserTest, GetCmdArgsFromParser) {
   parser.parse(ac, av);
 
   EXPECT_EQ(parser.getInputFileName(), "test_file");
-  EXPECT_EQ(parser.getOutputDirName(), "test_dir/final.tree");
+  EXPECT_EQ(parser.getOutputDirName(), "test_dir");
 }
 
 TEST_F(CmdParserTest, CatchBoostException) {

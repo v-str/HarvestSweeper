@@ -1,6 +1,7 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <memory>
 #include <string>
 
 #include <boost/json.hpp>
@@ -23,7 +24,7 @@ private:
 
 class Tools {
 public:
-  static json::value getJsonObject(const string &filename);
+  static unique_ptr<json::value> getJsonObject(const string &filename);
 };
 
 #endif // TOOLS_H

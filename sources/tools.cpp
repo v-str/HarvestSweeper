@@ -51,7 +51,7 @@ void Logger::print(LogColor clr, const string &title, const string &body) {
   cout << format("{}: {}", embrace(clr, title), body) << endl;
 }
 
-json::value Tools::getJsonObject(const string &filename) {
+unique_ptr<json::value> Tools::getJsonObject(const string &filename) {
   if (filename.empty())
     return nullptr;
 
@@ -63,18 +63,15 @@ json::value Tools::getJsonObject(const string &filename) {
   json::error_code error;
 
   string line;
-  while (std::getline(file, line)) {
+  while (getline(file, line)) {
 
     try {
       parser.write(line);
-    } catch (std::exception &e) {
+    } catch (exception &e) {
       Logger::error("JSON", "Error parsing JSON file: " + filename);
       Logger::error("JSON", "Error: " + string(e.what()));
       return nullptr;
     }
-
-    if (error)
-      return nullptr;
   }
   parser.finish(error);
 
@@ -82,8 +79,8 @@ json::value Tools::getJsonObject(const string &filename) {
     return nullptr;
 
   try {
-    return parser.release();
-  } catch (std::exception &e) {
+    return make_unique<json::value>(parser.release());
+  } catch (exception &e) {
     return nullptr;
   }
 }

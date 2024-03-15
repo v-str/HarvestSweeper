@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include <boost/json.hpp>
 #include <string>
 
 #include <tools.hpp>
@@ -91,3 +92,8 @@ TEST(ToolsTest, getNullIfJsonObjectNotExist) {
 TEST(ToolsTest, getNullIfEmptyFileName) {
   ASSERT_THAT(Tools::getJsonObject(""), IsNull());
 }
+
+// TEST(ToolsTest, printTestJsonFile) {
+//   boost::json::value jsonObj = Tools::getJsonObject("test.txt");
+
+// }

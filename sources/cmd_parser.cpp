@@ -6,6 +6,7 @@
 namespace po = boost::program_options;
 
 const string kDefaultTreeName = "swept.tree";
+const string kJsonSuffix = ".json";
 
 CmdParser::CmdParser() : m_description("unused") {
 
@@ -30,7 +31,9 @@ void CmdParser::parseInputFileName() {
   if (m_variablesMap.count("input-file")) {
     m_inputFileName = m_variablesMap["input-file"].as<string>();
     if (filesystem::exists(m_inputFileName)) {
-      m_isInputFileNameValid = true;
+
+      if (m_inputFileName.find(kJsonSuffix) != string::npos)
+        m_isInputFileNameValid = true;
     } else {
       Logger::error("Ошибка", m_inputFileName + " не найден");
     }

@@ -32,8 +32,8 @@ TEST_F(CmdParserTest, IsArgumentsInvalidCount) {
 
 TEST_F(CmdParserTest, isInputFileNameValid) {
   int ac = 5;
-  char *av[] = {"coverage_program", "--input-file", "test_file", "--output-dir",
-                "test_dir"};
+  char *av[] = {"coverage_program", "--input-file", "test_file.json",
+                "--output-dir", "test_dir"};
 
   parser.parse(ac, av);
 
@@ -101,6 +101,16 @@ TEST_F(CmdParserTest, InputFileNotFound) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "nofile", "--output-dir",
                 "test_dir"};
+
+  parser.parse(ac, av);
+
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
+}
+
+TEST_F(CmdParserTest, IncorrectInputFileNameExtension) {
+  int ac = 5;
+  char *av[] = {"coverage_program", "--input-file", "example.txt",
+                "--output-dir", "test_dir"};
 
   parser.parse(ac, av);
 

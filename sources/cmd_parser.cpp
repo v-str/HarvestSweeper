@@ -1,6 +1,7 @@
 #include "cmd_parser.hpp"
 #include "tools.hpp"
 
+#include <cctype>
 #include <filesystem>
 
 namespace po = boost::program_options;
@@ -30,13 +31,8 @@ void CmdParser::parseOptionsInternal(int argc, char **argv) {
 void CmdParser::parseInputFileName() {
   if (m_variablesMap.count("input-file")) {
     m_inputFileName = m_variablesMap["input-file"].as<string>();
-    if (filesystem::exists(m_inputFileName)) {
 
-      if (m_inputFileName.find(kJsonSuffix) != string::npos)
-        m_isInputFileNameValid = true;
-    } else {
-      Logger::error("Ошибка", m_inputFileName + " не найден");
-    }
+    checkIsInputFileNameValid();
   }
 }
 
@@ -62,4 +58,15 @@ void CmdParser::parse(int argc, char **argv) {
 
 string CmdParser::getCurrentPath() const {
   return filesystem::current_path().string();
+}
+
+void CmdParser::checkIsInputFileNameValid() {
+  if (filesystem::exists(m_inputFileName)) {
+
+    if (m_inputFileName.find(kJsonSuffix) != string::npos) {
+      if (isalpha(m_inputFileName[0])) {
+        m_isInputFileNameValid = true;
+      }
+    }
+  }
 }

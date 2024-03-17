@@ -116,3 +116,37 @@ TEST_F(CmdParserTest, IncorrectInputFileNameExtension) {
 
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
+
+TEST_F(CmdParserTest, IncorectInputFileNameBeforeExtension) {
+  int ac = 5;
+  char *av[] = {"coverage_program", "--input-file", ".json", "--output-dir",
+                "test_dir"};
+
+  parser.parse(ac, av);
+
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
+}
+
+TEST_F(CmdParserTest, IncorrectFirstLetterFileNameBeforeExtension) {
+  int ac = 5;
+  char *av[] = {"coverage_program", "--input-file", "_.json", "--output-dir",
+                "test_dir"};
+
+  parser.parse(ac, av);
+
+  EXPECT_EQ(parser.isInputFileNameValid(), false);
+}
+
+TEST_F(CmdParserTest, isFirstLetterFileNameIsAlpha) {
+  int ac = 5;
+  char *av[] = {"coverage_program", "--input-file", "A.json", "--output-dir",
+                "test_dir"};
+
+  parser.parse(ac, av);
+  EXPECT_EQ(parser.isInputFileNameValid(), true);
+
+  av[2] = "a.json";
+
+  parser.parse(ac, av);
+  EXPECT_EQ(parser.isInputFileNameValid(), true);
+}

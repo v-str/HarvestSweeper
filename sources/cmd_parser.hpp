@@ -25,6 +25,8 @@ private:
   void parseInputFileName();
   void parseOutputDirName();
 
+  void checkIsInputFileNameValid();
+
   string getCurrentPath() const;
 
   bool m_isInputFileNameValid = false;

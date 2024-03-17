@@ -32,8 +32,8 @@ TEST_F(CmdParserTest, IsArgumentsInvalidCount) {
 
 TEST_F(CmdParserTest, isInputFileNameValid) {
   int ac = 5;
-  char *av[] = {"coverage_program", "--input-file", "test_file.json",
-                "--output-dir", "test_dir"};
+  char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
+                "test_dir"};
 
   parser.parse(ac, av);
 
@@ -42,12 +42,12 @@ TEST_F(CmdParserTest, isInputFileNameValid) {
 
 TEST_F(CmdParserTest, GetCmdArgsFromParser) {
   int ac = 5;
-  char *av[] = {"coverage_program", "--input-file", "test_file", "--output-dir",
+  char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
                 "test_dir"};
 
   parser.parse(ac, av);
 
-  EXPECT_EQ(parser.getInputFileName(), "test_file");
+  EXPECT_EQ(parser.getInputFileName(), "test.json");
   EXPECT_EQ(parser.getOutputDirName(), "test_dir");
 }
 
@@ -58,7 +58,6 @@ TEST_F(CmdParserTest, GetCmdArgsFromParserWithOutdirAsDot) {
 
   parser.parse(ac, av);
 
-  // get current working directory
   std::filesystem::path cwd = std::filesystem::current_path();
 
   EXPECT_EQ(parser.getInputFileName(), "test.json");

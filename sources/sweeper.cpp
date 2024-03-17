@@ -23,7 +23,6 @@ void Sweeper::checkParams() {
 }
 
 void Sweeper::printParams() const {
-  Logger::normal("Параметры получены");
   Logger::normal("Файл", m_jsonFile);
   Logger::normal("Директория для сохранения", m_outputDir);
 }

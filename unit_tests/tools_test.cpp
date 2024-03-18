@@ -115,7 +115,8 @@ TEST(ToolsTest, printTestJsonFile) {
 
   auto range = valueVector | views::all;
 
-  vector<string> etalonVector = {"cp", "ls", "mkfs", "wget"};
+  vector<string> etalonVector = {"cp",   "ls",   "mkfs", "wget",  "file",
+                                 "more", "grep", "cat",  "chmod", "chown"};
 
   // лямбда, которая проверяет что все объекты из test.json есть в etalonVector
   auto isValueInArray = [&](const string &value) {

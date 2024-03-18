@@ -1,9 +1,9 @@
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include <boost/json.hpp>
 
@@ -23,15 +23,18 @@ public:
   bool isOutputDirOk() const;
   bool isEverythingOk() const;
 
+  unordered_map<string, string> getMap() const;
+
 private:
   void checkFile();
   void checkDirectory();
+  void fillMap();
 
   string m_jsonFile;
   string m_outputDir;
 
   unique_ptr<json::value> m_jsonObjectPtr;
-  map<string, string> m_valueMap;
+  unordered_map<string, string> m_valueMap;
 
   bool m_isFileOk = false;
   bool m_isOutputDirOk = false;

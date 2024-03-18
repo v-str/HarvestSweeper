@@ -1,6 +1,8 @@
 #include "sweeper.hpp"
 
+#include <boost/json.hpp>
 #include <filesystem>
+#include <ranges>
 
 #include "tools.hpp"
 
@@ -12,7 +14,10 @@ Sweeper::Sweeper(const string &jsonFile, const string &outputDir)
 
 Sweeper::~Sweeper() {}
 
-void Sweeper::sweep() {}
+void Sweeper::sweep() {
+  // fill the map with the m_jsonFile contents
+  fillMap();
+}
 
 void Sweeper::checkFile() {
   m_jsonObjectPtr = Tools::getJsonObject(m_jsonFile);
@@ -63,3 +68,21 @@ void Sweeper::Sweeper::Sweeper::checkDirectory() {
 }
 
 bool Sweeper::isEverythingOk() const { return m_isFileOk && m_isOutputDirOk; }
+
+void Sweeper::fillMap() {
+  auto jsonObjectPtr = Tools::getJsonObject(m_jsonFile);
+
+  if (jsonObjectPtr.get()->is_object()) {
+    auto &rootArray = jsonObjectPtr.get()->at("root").as_array();
+
+    for (const auto &item : rootArray.at(0).as_object()) {
+      auto key = string(item.key().data(), item.key().length());
+      auto jstring = item.value().as_string();
+      auto value = string(jstring.c_str());
+
+      m_valueMap[key] = value;
+    }
+  }
+}
+
+unordered_map<string, string> Sweeper::getMap() const { return m_valueMap; }

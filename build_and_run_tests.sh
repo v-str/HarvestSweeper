@@ -16,7 +16,13 @@ function build_and_run_tests() {
       "cp": "/usr/bin/cp",
       "ls": "/usr/bin/ls",
       "mkfs": "/usr/sbin/mkfs",
-      "wget": "/usr/sbin/wget"
+      "wget": "/usr/sbin/wget",
+      "file": "/usr/bin/file",
+      "more": "/usr/bin/more",
+      "grep": "/usr/bin/grep",
+      "cat": "/usr/bin/cat",
+      "chmod": "/usr/bin/chmod",
+      "chown": "/usr/bin/chown"
     }
   ]
 }

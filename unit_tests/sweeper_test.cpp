@@ -20,3 +20,10 @@ TEST_F(SweeperTest, isOutputDirBadPermissions) {
   sweeper.setParams("test.json", "/usr/bin/test_dir");
   ASSERT_FALSE(sweeper.isOutputDirOk());
 }
+
+TEST_F(SweeperTest, catchSystemOutputPathDeletionError) {
+  sweeper.setParams("test.json", "/usr/share/man");
+  ASSERT_FALSE(sweeper.isOutputDirOk());
+}
+
+TEST_F(SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }

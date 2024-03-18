@@ -12,4 +12,11 @@ public:
   Sweeper sweeper;
 };
 
-TEST_F(SweeperTest, isParamsValid) { ASSERT_TRUE(sweeper.isParamsValid()); }
+TEST_F(SweeperTest, isJasonFileOk) { ASSERT_TRUE(sweeper.isFileOk()); }
+
+TEST_F(SweeperTest, isOutputDirOk) { ASSERT_TRUE(sweeper.isOutputDirOk()); }
+
+TEST_F(SweeperTest, isOutputDirBadPermissions) {
+  sweeper.setParams("test.json", "/usr/bin/test_dir");
+  ASSERT_FALSE(sweeper.isOutputDirOk());
+}

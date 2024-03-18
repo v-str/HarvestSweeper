@@ -18,19 +18,22 @@ public:
 
   void sweep();
 
-  bool isParamsValid() const;
+  bool isFileOk() const;
+  bool isOutputDirOk() const;
 
 private:
   void printParams() const;
 
-  void checkParams();
+  void checkFile();
+  void checkDirectory();
 
   string m_jsonFile;
   string m_outputDir;
 
   std::unique_ptr<json::value> m_jsonObjectPtr;
 
-  bool m_isParamsValid = false;
+  bool m_isFileOk = false;
+  bool m_isOutputDirOk = false;
 };
 
 #endif // SWEEPER_HPP

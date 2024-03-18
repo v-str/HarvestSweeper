@@ -22,6 +22,24 @@ function build_and_run_tests() {
 }
 EOF
 
+  cat <<EOF > broken.json
+{
+  "root" : [
+    {
+      "cp": "/usr/bin/cp",
+      "ls": "/usr/bin/ls",
+      "mkfs": "/usr/sbin/mkfs"
+      "wget": "/usr/sbin/wget"
+    }
+  ]
+  "broken": [
+    {
+      c"p: /usr/bin/cp"
+    }
+  ]
+}
+EOF
+
   touch A.json
   touch a.json
 

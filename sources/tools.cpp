@@ -68,8 +68,6 @@ unique_ptr<json::value> Tools::getJsonObject(const string &filename) {
     try {
       parser.write(line);
     } catch (exception &e) {
-      Logger::error("JSON", "Error parsing JSON file: " + filename);
-      Logger::error("JSON", "Error: " + string(e.what()));
       return nullptr;
     }
   }
@@ -78,9 +76,5 @@ unique_ptr<json::value> Tools::getJsonObject(const string &filename) {
   if (error)
     return nullptr;
 
-  try {
-    return make_unique<json::value>(parser.release());
-  } catch (exception &e) {
-    return nullptr;
-  }
+  return make_unique<json::value>(parser.release());
 }

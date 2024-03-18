@@ -94,6 +94,10 @@ TEST(ToolsTest, getNullIfJsonObjectNotExist) {
   ASSERT_THAT(Tools::getJsonObject("not_exist.txt"), IsNull());
 }
 
+TEST(ToolsTest, getNullIfJsonObjectIfTestObjectBroken) {
+  ASSERT_THAT(Tools::getJsonObject("broken.json"), IsNull());
+}
+
 TEST(ToolsTest, getNullIfEmptyFileName) {
   ASSERT_THAT(Tools::getJsonObject(""), IsNull());
 }

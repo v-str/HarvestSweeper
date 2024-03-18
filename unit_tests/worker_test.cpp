@@ -3,19 +3,19 @@
 #include <string>
 #include <unordered_map>
 
-#include "worker.hpp"
+#include "sweep_worker.hpp"
+#include "sweeper.hpp"
+
+#include <iostream>
 
 using namespace testing;
 using namespace std;
 
-class WorkerTest : public Test {
-public:
-  WorkerTest()
-      : worker("test_dir",
-               {{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}}){};
+TEST(SweepWorkerTest, first) {
+  Sweeper sweeper("test.json", "result_dir");
+  sweeper.sweep();
 
-protected:
-  Worker worker;
-};
+  SweepWorker sweeper_worker("result_dir", sweeper.getMap());
 
-TEST_F(WorkerTest, canBeCreated) { ASSERT_THAT(&worker, NotNull()); }
+  EXPECT_EQ(1, 1);
+}

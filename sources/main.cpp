@@ -10,7 +10,10 @@ int main(int argc, char *argv[]) {
 
   if (cmd.isInputFileNameValid()) {
     Sweeper sweeper(cmd.getInputFileName(), cmd.getOutputDirName());
-    sweeper.sweep();
+
+    if (sweeper.isEverythingOk())
+      sweeper.sweep();
+
   } else {
     Logger::warning("Использование",
                     string(argv[0]) +

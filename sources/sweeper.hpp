@@ -1,6 +1,7 @@
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -20,17 +21,17 @@ public:
 
   bool isFileOk() const;
   bool isOutputDirOk() const;
+  bool isEverythingOk() const;
 
 private:
-  void printParams() const;
-
   void checkFile();
   void checkDirectory();
 
   string m_jsonFile;
   string m_outputDir;
 
-  std::unique_ptr<json::value> m_jsonObjectPtr;
+  unique_ptr<json::value> m_jsonObjectPtr;
+  map<string, string> m_valueMap;
 
   bool m_isFileOk = false;
   bool m_isOutputDirOk = false;

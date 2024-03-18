@@ -6,7 +6,6 @@
 
 Sweeper::Sweeper(const string &jsonFile, const string &outputDir)
     : m_jsonFile(jsonFile), m_outputDir(outputDir) {
-  // printParams();
   checkFile();
   checkDirectory();
 }
@@ -19,11 +18,8 @@ void Sweeper::checkFile() {
   m_jsonObjectPtr = Tools::getJsonObject(m_jsonFile);
   if (m_jsonObjectPtr)
     m_isFileOk = true;
-}
-
-void Sweeper::printParams() const {
-  Logger::normal("Файл", m_jsonFile);
-  Logger::normal("Директория для сохранения", m_outputDir);
+  else
+    Logger::error("Sweeper::checkFile", "m_jsonObjectPtr is null");
 }
 
 void Sweeper::setParams(const string &jsonFile, const string &outputDir) {
@@ -65,3 +61,5 @@ void Sweeper::Sweeper::Sweeper::checkDirectory() {
     m_isOutputDirOk = false;
   }
 }
+
+bool Sweeper::isEverythingOk() const { return m_isFileOk && m_isOutputDirOk; }

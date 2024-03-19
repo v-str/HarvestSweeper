@@ -11,10 +11,15 @@
 using namespace testing;
 using namespace std;
 
-TEST(SweepWorkerTest, first) {
-  Sweeper sweeper("test.json", "result_dir");
-  sweeper.sweep();
+class SweepWorkerTest : public Test {
+public:
+  SweepWorkerTest() : sweeper("test.json", "test_dir") { sweeper.sweep(); }
+  ~SweepWorkerTest() = default;
 
+  Sweeper sweeper;
+};
+
+TEST_F(SweepWorkerTest, first) {
   SweepWorker sweeper_worker("result_dir", sweeper.getMap());
 
   EXPECT_EQ(1, 1);

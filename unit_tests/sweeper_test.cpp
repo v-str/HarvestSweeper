@@ -10,10 +10,23 @@ using namespace testing;
 
 class SweeperTest : public Test {
 public:
-  SweeperTest() : sweeper("test.json", "test_dir") {}
+  SweeperTest() : sweeper("test.json", "test_dir") {
+    // копия файла test.json
+    testMap["cp"] = "/usr/bin/cp";
+    testMap["ls"] = "/usr/bin/ls";
+    testMap["mkfs"] = "/usr/sbin/mkfs";
+    testMap["wget"] = "/usr/sbin/wget";
+    testMap["file"] = "/usr/bin/file";
+    testMap["more"] = "/usr/bin/more";
+    testMap["grep"] = "/usr/bin/grep";
+    testMap["cat"] = "/usr/bin/cat";
+    testMap["chmod"] = "/usr/bin/chmod";
+    testMap["chown"] = "/usr/bin/chown";
+  }
   ~SweeperTest() = default;
 
   Sweeper sweeper;
+  unordered_map<string, string> testMap;
 };
 
 TEST_F(SweeperTest, isJasonFileOk) { ASSERT_TRUE(sweeper.isFileOk()); }
@@ -32,28 +45,8 @@ TEST_F(SweeperTest, catchSystemOutputPathDeletionError) {
 
 TEST_F(SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }
 
-/*
-      "cp": "/usr/bin/cp",
-      "ls": "/usr/bin/ls",
-      "mkfs": "/usr/sbin/mkfs",
-      "wget": "/usr/sbin/wget",
-      "file": "/usr/bin/file",
-      "more": "/usr/bin/more",
-      "grep": "/usr/bin/grep",
-      "cat": "/usr/bin/cat",
-      "chmod": "/usr/bin/chmod",
-      "chown": "/usr/bin/chown"
-*/
-
 TEST_F(SweeperTest, getMap) {
   sweeper.sweep();
-
-  unordered_map<string, string> map{
-      {"cp", "/usr/bin/cp"},       {"ls", "/usr/bin/ls"},
-      {"mkfs", "/usr/sbin/mkfs"},  {"wget", "/usr/sbin/wget"},
-      {"file", "/usr/bin/file"},   {"more", "/usr/bin/more"},
-      {"grep", "/usr/bin/grep"},   {"cat", "/usr/bin/cat"},
-      {"chmod", "/usr/bin/chmod"}, {"chown", "/usr/bin/chown"}};
 
   auto isMapsEqual = [](const unordered_map<string, string> &map1,
                         const unordered_map<string, string> &map2) {
@@ -66,5 +59,7 @@ TEST_F(SweeperTest, getMap) {
     return false;
   };
 
-  ASSERT_TRUE(isMapsEqual(map, sweeper.getMap()));
+  ASSERT_TRUE(isMapsEqual(testMap, sweeper.getMap()));
 }
+
+TEST_F(SweeperTest, SplitBy4Chunks) {}

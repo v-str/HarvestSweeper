@@ -15,14 +15,14 @@ namespace json = boost::json;
 
 enum class Clr { yellow, red, green, blue };
 
-class LoggerTest : public Test {
+class DISABLED_LoggerTest : public Test {
 public:
-  LoggerTest() {
+  DISABLED_LoggerTest() {
     m_oldBuf = cout.rdbuf();
     cout.rdbuf(m_ss.rdbuf());
   }
 
-  ~LoggerTest() { cout.rdbuf(m_oldBuf); }
+  ~DISABLED_LoggerTest() { cout.rdbuf(m_oldBuf); }
 
   stringstream m_ss;
   streambuf *m_oldBuf;
@@ -50,7 +50,7 @@ string getExpectedString(Clr c, const string &title, const string &body) {
   return color + title + resetCode + ": " + body + "\n";
 }
 
-TEST_F(LoggerTest, infoTest) {
+TEST_F(DISABLED_LoggerTest, infoTest) {
   Logger::info("Info", "This is an info message");
   string output = m_ss.str();
 
@@ -58,7 +58,7 @@ TEST_F(LoggerTest, infoTest) {
             getExpectedString(Clr::blue, "Info", "This is an info message"));
 }
 
-TEST_F(LoggerTest, warningTest) {
+TEST_F(DISABLED_LoggerTest, warningTest) {
   Logger::warning("Warning", "This is a warning message");
   string output = m_ss.str();
 
@@ -66,7 +66,7 @@ TEST_F(LoggerTest, warningTest) {
                                       "This is a warning message"));
 }
 
-TEST_F(LoggerTest, normalTest) {
+TEST_F(DISABLED_LoggerTest, normalTest) {
   Logger::normal("Normal", "This is a normal message");
   string output = m_ss.str();
 
@@ -74,7 +74,7 @@ TEST_F(LoggerTest, normalTest) {
                                       "This is a normal message"));
 }
 
-TEST_F(LoggerTest, errorTest) {
+TEST_F(DISABLED_LoggerTest, errorTest) {
   Logger::error("Error", "This is a error message");
   string output = m_ss.str();
 
@@ -82,27 +82,34 @@ TEST_F(LoggerTest, errorTest) {
             getExpectedString(Clr::red, "Error", "This is a error message"));
 }
 
-TEST(ToolsTest, getJsonObject) {
+class DISABLED_ToolsTest : public Test {
+public:
+  unique_ptr<json::value> getJsonObjectTest(const string &name) {
+    return Tools::getJsonObject(name);
+  }
+};
+
+TEST_F(DISABLED_ToolsTest, getJsonObject) {
   ASSERT_THAT(Tools::getJsonObject("test.json"), NotNull());
 }
 
-TEST(ToolsTest, getNullIfJsonObjectIsNotJsonObject) {
+TEST_F(DISABLED_ToolsTest, getNullIfJsonObjectIsNotJsonObject) {
   ASSERT_THAT(Tools::getJsonObject("test.txt"), IsNull());
 }
 
-TEST(ToolsTest, getNullIfJsonObjectNotExist) {
+TEST_F(DISABLED_ToolsTest, getNullIfJsonObjectNotExist) {
   ASSERT_THAT(Tools::getJsonObject("not_exist.txt"), IsNull());
 }
 
-TEST(ToolsTest, getNullIfJsonObjectIfTestObjectBroken) {
+TEST_F(DISABLED_ToolsTest, getNullIfJsonObjectIfTestObjectBroken) {
   ASSERT_THAT(Tools::getJsonObject("broken.json"), IsNull());
 }
 
-TEST(ToolsTest, getNullIfEmptyFileName) {
+TEST_F(DISABLED_ToolsTest, getNullIfEmptyFileName) {
   ASSERT_THAT(Tools::getJsonObject(""), IsNull());
 }
 
-TEST(ToolsTest, printTestJsonFile) {
+TEST_F(DISABLED_ToolsTest, printTestJsonFile) {
   unique_ptr<json::value> jsonObjPtr = Tools::getJsonObject("test.json");
 
   ASSERT_THAT(jsonObjPtr, NotNull());

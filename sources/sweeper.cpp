@@ -1,10 +1,12 @@
 #include "sweeper.hpp"
 
-#include <boost/json.hpp>
 #include <filesystem>
 #include <ranges>
 
+#include "sweep_worker.hpp"
 #include "tools.hpp"
+
+static const unsigned short kThreadCount = 4;
 
 Sweeper::Sweeper(const string &jsonFile, const string &outputDir)
     : m_jsonFile(jsonFile), m_outputDir(outputDir) {
@@ -17,6 +19,18 @@ Sweeper::~Sweeper() {}
 void Sweeper::sweep() {
   // fill the map with the m_jsonFile contents
   fillMap();
+
+  // create view chunks
+  if (m_valueMap.size() > 0) {
+    auto chunksViews =
+        m_valueMap |
+        ranges::views::transform([](const auto &pair) { return pair; }) |
+        ranges::views::chunk(m_valueMap.size() / kThreadCount);
+
+    for (const auto &chunk : chunksViews) {
+      SweepWorker<decltype(chunk)> worker(m_outputDir, chunk);
+    }
+  }
 }
 
 void Sweeper::checkFile() {
@@ -86,3 +100,5 @@ void Sweeper::fillMap() {
 }
 
 unordered_map<string, string> Sweeper::getMap() const { return m_valueMap; }
+
+string Sweeper::getOutputDir() const { return m_outputDir; }

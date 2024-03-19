@@ -24,6 +24,7 @@ public:
   bool isEverythingOk() const;
 
   unordered_map<string, string> getMap() const;
+  string getOutputDir() const;
 
 private:
   void checkFile();

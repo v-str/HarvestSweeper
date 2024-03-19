@@ -15,6 +15,12 @@ public:
       : m_outputDirPath(outputDirPath), m_chunkView(chunkView) {}
   ~SweepWorker() = default;
 
+  void run() {
+    for (const auto &[key, value] : m_chunkView) {
+      Logger::info(key, value);
+    }
+  }
+
 private:
   const string m_outputDirPath;
   ChunkView m_chunkView;

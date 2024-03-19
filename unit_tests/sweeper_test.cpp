@@ -25,8 +25,6 @@ public:
     testMap["cat"] = "/usr/bin/cat";
     testMap["chmod"] = "/usr/bin/chmod";
     testMap["chown"] = "/usr/bin/chown";
-
-    sweeper.sweep();
   }
   ~SweeperTest() = default;
 
@@ -51,6 +49,8 @@ TEST_F(SweeperTest, catchSystemOutputPathDeletionError) {
 TEST_F(SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }
 
 TEST_F(SweeperTest, getMap) {
+
+  sweeper.sweep();
 
   auto isMapsEqual = [](const unordered_map<string, string> &map1,
                         const unordered_map<string, string> &map2) {

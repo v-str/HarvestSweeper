@@ -11,8 +11,9 @@ int main(int argc, char *argv[]) {
   if (cmd.isInputFileNameValid()) {
     Sweeper sweeper(cmd.getInputFileName(), cmd.getOutputDirName());
 
-    if (sweeper.isEverythingOk())
-      sweeper.sweep();
+    if (sweeper.isEverythingOk()) {
+      return 0;
+    }
 
   } else {
     Logger::warning("Использование",

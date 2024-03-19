@@ -29,6 +29,7 @@ void Sweeper::sweep() {
 
     for (const auto &chunk : chunksViews) {
       SweepWorker<decltype(chunk)> worker(m_outputDir, chunk);
+      worker.run();
     }
   }
 }

@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include <ranges>
 #include <string>
 #include <unordered_map>
 
@@ -11,6 +12,8 @@
 using namespace testing;
 using namespace std;
 
+static const unsigned short kThreadCount = 4;
+
 class SweepWorkerTest : public Test {
 public:
   SweepWorkerTest() : sweeper("test.json", "test_dir") { sweeper.sweep(); }
@@ -19,8 +22,10 @@ public:
   Sweeper sweeper;
 };
 
-TEST_F(SweepWorkerTest, first) {
+TEST_F(SweepWorkerTest, getChunkDistance) {
   SweepWorker sweeper_worker("result_dir", sweeper.getMap());
 
-  EXPECT_EQ(1, 1);
+  auto chunkViews = sweeper_worker.getChunkViews();
+
+  EXPECT_EQ(ranges::distance(chunkViews), 5);
 }

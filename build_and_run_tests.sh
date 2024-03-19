@@ -2,7 +2,7 @@
 
 function build_and_run_tests() {
   pushd build
-  rm -rf coverage/harvest_sweeper_unit_test sources
+  rm -rf coverage/harvest_sweeper_unit_test sources bin
   find . -type f -name "*.gcda" -exec rm {} \;
   cmake ../
   make -j`nproc`

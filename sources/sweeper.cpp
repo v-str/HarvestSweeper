@@ -6,8 +6,6 @@
 
 #include "tools.hpp"
 
-static const unsigned short kCores = 4;
-
 Sweeper::Sweeper(const string &jsonFile, const string &outputDir)
     : m_jsonFile(jsonFile), m_outputDir(outputDir) {
   checkFile();

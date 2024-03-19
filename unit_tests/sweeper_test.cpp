@@ -1,6 +1,9 @@
 #include <gmock/gmock.h>
 
 #include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <ranges>
 #include <unordered_map>
 
 #include "sweeper.hpp"
@@ -22,6 +25,8 @@ public:
     testMap["cat"] = "/usr/bin/cat";
     testMap["chmod"] = "/usr/bin/chmod";
     testMap["chown"] = "/usr/bin/chown";
+
+    sweeper.sweep();
   }
   ~SweeperTest() = default;
 
@@ -46,7 +51,6 @@ TEST_F(SweeperTest, catchSystemOutputPathDeletionError) {
 TEST_F(SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }
 
 TEST_F(SweeperTest, getMap) {
-  sweeper.sweep();
 
   auto isMapsEqual = [](const unordered_map<string, string> &map1,
                         const unordered_map<string, string> &map2) {
@@ -61,5 +65,3 @@ TEST_F(SweeperTest, getMap) {
 
   ASSERT_TRUE(isMapsEqual(testMap, sweeper.getMap()));
 }
-
-TEST_F(SweeperTest, SplitBy4Chunks) {}

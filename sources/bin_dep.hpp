@@ -11,8 +11,11 @@ public:
   BinDep(const string &filename);
   ~BinDep() = default;
 
+  vector<string> getDeps() const;
+
 private:
   string m_filename;
+  vector<string> m_deps;
 };
 
 #endif // BIN_DEP_HPP

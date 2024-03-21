@@ -1,18 +1,54 @@
 #include "bin_dep.hpp"
 
-#include <elf.h>
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <stdio.h>
 #include <string.h>
 
 #include "tools.hpp"
 
-using std::ifstream, std::cout, std::endl, std::getline;
+static const string kLogDir = string(getenv("HOME")) + "/bin_dep.dir";
 
-BinDep::BinDep(const string &filename) : m_filename(filename) {
+BinDep::BinDep(const string &filename)
+    : m_filename(filename), m_fileStream(filename, std::ios::binary) {
 
-  parseElfFile();
+  if (m_fileStream.fail()) {
+    writeLog(filename + " : " + strerror(errno));
+  } else {
+    m_isOk = true;
+  }
+
+  parse();
+}
+
+void BinDep::parse() {
+  if (!m_isOk) {
+    return;
+  }
+  m_fileStream.read(reinterpret_cast<char *>(&m_elfHeader),
+                    sizeof(m_elfHeader));
+}
+
+void BinDep::writeLog(const string &message) {
+
+  if (!std::filesystem::exists(kLogDir)) {
+    std::filesystem::create_directory(kLogDir);
+  }
+
+  string shortName = m_filename;
+  size_t npos = m_filename.find_last_of("/\\");
+  if (npos != string::npos) {
+    shortName = m_filename.substr(npos + 1);
+  }
+
+  string logFile = kLogDir + "/" + shortName + ".log";
+
+  ofstream logStream(logFile, std::ios::app | std::ios::out);
+  if (logStream.is_open()) {
+    logStream << message << endl;
+    logStream.close();
+  } else {
+    Logger::error("error", strerror(errno));
+  }
 }
 
 vector<string> BinDep::getDeps() const { return m_deps; }

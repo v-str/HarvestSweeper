@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "bin_dep.hpp"
 #include "tools.hpp"
 
 using namespace std;
@@ -23,9 +24,11 @@ public:
     }
 
     for (const auto &[key, value] : m_chunkView) {
-      Logger::info(key, value);
+
       m_currentFile = key;
       m_currentFilePath = value;
+
+      findFileDependencies();
     }
   }
 
@@ -41,6 +44,13 @@ private:
 
 
     */
+
+    if (std::filesystem::exists(m_currentFilePath)) {
+      BinDep binDep(m_currentFilePath);
+
+      if (binDep.isElf()) {
+      }
+    }
   }
 
   const string m_outputDirPath;

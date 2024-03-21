@@ -4,6 +4,7 @@
 #include <elf.h>
 
 #include <fstream>
+#include <ranges>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,10 @@ public:
   ~BinDep();
 
   vector<string> getDeps() const;
+
+  auto getView() const {
+    return views::iota(m_depsVector.begin(), m_depsVector.end());
+  }
 
   bool isElf() const;
 

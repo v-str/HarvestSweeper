@@ -6,12 +6,12 @@
 
 using namespace testing;
 
-class DISABLED_CmdParserTest : public Test {
+class CmdParserTest : public Test {
 public:
   CmdParser parser;
 };
 
-TEST_F(DISABLED_CmdParserTest, IsArgumentsInvalid) {
+TEST_F(CmdParserTest, IsArgumentsInvalid) {
   int ac = 3;
   char *av[] = {"coverage_program", "invalid_arg1", "invalid_arg2"};
 
@@ -20,7 +20,7 @@ TEST_F(DISABLED_CmdParserTest, IsArgumentsInvalid) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, IsArgumentsInvalidCount) {
+TEST_F(CmdParserTest, IsArgumentsInvalidCount) {
   int ac = 6;
   char *av[] = {"coverage_program", "invalid_arg1", "invalid_arg2",
                 "invalid_arg3",     "invalid_arg4", "invalid_arg5"};
@@ -30,7 +30,7 @@ TEST_F(DISABLED_CmdParserTest, IsArgumentsInvalidCount) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, isInputFileNameValid) {
+TEST_F(CmdParserTest, isInputFileNameValid) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
                 "test_dir"};
@@ -40,7 +40,7 @@ TEST_F(DISABLED_CmdParserTest, isInputFileNameValid) {
   EXPECT_EQ(parser.isInputFileNameValid(), true);
 }
 
-TEST_F(DISABLED_CmdParserTest, GetCmdArgsFromParser) {
+TEST_F(CmdParserTest, GetCmdArgsFromParser) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
                 "test_dir"};
@@ -51,7 +51,7 @@ TEST_F(DISABLED_CmdParserTest, GetCmdArgsFromParser) {
   EXPECT_EQ(parser.getOutputDirName(), "test_dir");
 }
 
-TEST_F(DISABLED_CmdParserTest, GetCmdArgsFromParserWithOutdirAsDot) {
+TEST_F(CmdParserTest, GetCmdArgsFromParserWithOutdirAsDot) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
                 "."};
@@ -64,7 +64,7 @@ TEST_F(DISABLED_CmdParserTest, GetCmdArgsFromParserWithOutdirAsDot) {
   EXPECT_EQ(parser.getOutputDirName(), cwd.string());
 }
 
-TEST_F(DISABLED_CmdParserTest, OutdirWithDotAndSlash) {
+TEST_F(CmdParserTest, OutdirWithDotAndSlash) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "test.json", "--output-dir",
                 "./"};
@@ -78,7 +78,7 @@ TEST_F(DISABLED_CmdParserTest, OutdirWithDotAndSlash) {
   EXPECT_EQ(parser.getOutputDirName(), cwd.string());
 }
 
-TEST_F(DISABLED_CmdParserTest, CatchBoostException) {
+TEST_F(CmdParserTest, CatchBoostException) {
   int ac = 2;
   char *av[] = {"coverage_program", "--xyz"};
 
@@ -87,7 +87,7 @@ TEST_F(DISABLED_CmdParserTest, CatchBoostException) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, NoArgumentsPassed) {
+TEST_F(CmdParserTest, NoArgumentsPassed) {
   int ac = 1;
   char *av[] = {"coverage_program"};
 
@@ -96,7 +96,7 @@ TEST_F(DISABLED_CmdParserTest, NoArgumentsPassed) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, InputFileNotFound) {
+TEST_F(CmdParserTest, InputFileNotFound) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "nofile", "--output-dir",
                 "test_dir"};
@@ -106,7 +106,7 @@ TEST_F(DISABLED_CmdParserTest, InputFileNotFound) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, IncorrectInputFileNameExtension) {
+TEST_F(CmdParserTest, IncorrectInputFileNameExtension) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "example.txt",
                 "--output-dir", "test_dir"};
@@ -116,7 +116,7 @@ TEST_F(DISABLED_CmdParserTest, IncorrectInputFileNameExtension) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, IncorectInputFileNameBeforeExtension) {
+TEST_F(CmdParserTest, IncorectInputFileNameBeforeExtension) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", ".json", "--output-dir",
                 "test_dir"};
@@ -126,7 +126,7 @@ TEST_F(DISABLED_CmdParserTest, IncorectInputFileNameBeforeExtension) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, IncorrectFirstLetterFileNameBeforeExtension) {
+TEST_F(CmdParserTest, IncorrectFirstLetterFileNameBeforeExtension) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "_.json", "--output-dir",
                 "test_dir"};
@@ -136,7 +136,7 @@ TEST_F(DISABLED_CmdParserTest, IncorrectFirstLetterFileNameBeforeExtension) {
   EXPECT_EQ(parser.isInputFileNameValid(), false);
 }
 
-TEST_F(DISABLED_CmdParserTest, isFirstLetterFileNameIsAlpha) {
+TEST_F(CmdParserTest, isFirstLetterFileNameIsAlpha) {
   int ac = 5;
   char *av[] = {"coverage_program", "--input-file", "A.json", "--output-dir",
                 "test_dir"};

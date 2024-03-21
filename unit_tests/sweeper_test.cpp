@@ -11,9 +11,9 @@
 using namespace std;
 using namespace testing;
 
-class DISABLED_SweeperTest : public Test {
+class SweeperTest : public Test {
 public:
-  DISABLED_SweeperTest() : sweeper("test.json", "test_dir") {
+  SweeperTest() : sweeper("test.json", "test_dir") {
     // копия файла test.json
     testMap["cp"] = "/usr/bin/cp";
     testMap["ls"] = "/usr/bin/ls";
@@ -26,29 +26,29 @@ public:
     testMap["chmod"] = "/usr/bin/chmod";
     testMap["chown"] = "/usr/bin/chown";
   }
-  ~DISABLED_SweeperTest() = default;
+  ~SweeperTest() = default;
 
   Sweeper sweeper;
   unordered_map<string, string> testMap;
 };
 
-TEST_F(DISABLED_SweeperTest, isJasonFileOk) { ASSERT_TRUE(sweeper.isFileOk()); }
+TEST_F(SweeperTest, isJasonFileOk) { ASSERT_TRUE(sweeper.isFileOk()); }
 
-TEST_F(DISABLED_SweeperTest, isOutputDirOk) { ASSERT_TRUE(sweeper.isOutputDirOk()); }
+TEST_F(SweeperTest, isOutputDirOk) { ASSERT_TRUE(sweeper.isOutputDirOk()); }
 
-TEST_F(DISABLED_SweeperTest, isOutputDirBadPermissions) {
+TEST_F(SweeperTest, isOutputDirBadPermissions) {
   sweeper.setParams("test.json", "/usr/bin/test_dir");
   ASSERT_FALSE(sweeper.isOutputDirOk());
 }
 
-TEST_F(DISABLED_SweeperTest, catchSystemOutputPathDeletionError) {
+TEST_F(SweeperTest, catchSystemOutputPathDeletionError) {
   sweeper.setParams("test.json", "/usr/share/test-test");
   ASSERT_FALSE(sweeper.isOutputDirOk());
 }
 
-TEST_F(DISABLED_SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }
+TEST_F(SweeperTest, everythingOk) { ASSERT_TRUE(sweeper.isEverythingOk()); }
 
-TEST_F(DISABLED_SweeperTest, getMap) {
+TEST_F(SweeperTest, getMap) {
 
   sweeper.sweep();
 

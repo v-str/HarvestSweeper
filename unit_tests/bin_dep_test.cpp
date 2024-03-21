@@ -12,7 +12,7 @@ using namespace std;
 
 class BinDepTest : public Test {
 public:
-  BinDepTest() : m_dep("/usr/lib/libQt5dOpenGL.so.5.15.12") {}
+  BinDepTest() : m_dep("/usr/lib/libQt5OpenGL.so.5.15.12") {}
   ~BinDepTest(){};
 
   BinDep m_dep;

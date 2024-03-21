@@ -16,12 +16,17 @@ public:
 
   vector<string> getDeps() const;
 
+  bool isElf() const;
+
 private:
   void parse();
-  void writeLog(const string &message);
   void parseElfFile();
+  void parseElfHeader();
 
-  bool m_isOk = false;
+  void writeLog(const string &message);
+
+  bool m_isElf = false;
+
   string m_filename;
 
   vector<string> m_deps;

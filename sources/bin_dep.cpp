@@ -13,19 +13,32 @@ BinDep::BinDep(const string &filename)
 
   if (m_fileStream.fail()) {
     writeLog(filename + " : " + strerror(errno));
-  } else {
-    m_isOk = true;
+    return;
   }
 
   parse();
 }
 
 void BinDep::parse() {
-  if (!m_isOk) {
-    return;
+  parseElfHeader();
+
+  if (m_isElf) {
+    
   }
+}
+
+void BinDep::parseElfHeader() {
   m_fileStream.read(reinterpret_cast<char *>(&m_elfHeader),
                     sizeof(m_elfHeader));
+
+  if (m_elfHeader.e_ident[EI_MAG0] != ELFMAG0 ||
+      m_elfHeader.e_ident[EI_MAG1] != ELFMAG1 ||
+      m_elfHeader.e_ident[EI_MAG2] != ELFMAG2 ||
+      m_elfHeader.e_ident[EI_MAG3] != ELFMAG3) {
+    writeLog(m_filename + " : " + "Not an ELF file");
+  } else {
+    m_isElf = true;
+  }
 }
 
 void BinDep::writeLog(const string &message) {
@@ -35,9 +48,9 @@ void BinDep::writeLog(const string &message) {
   }
 
   string shortName = m_filename;
-  size_t npos = m_filename.find_last_of("/\\");
+  size_t npos = shortName.find_last_of("/\\");
   if (npos != string::npos) {
-    shortName = m_filename.substr(npos + 1);
+    shortName = shortName.substr(npos + 1);
   }
 
   string logFile = kLogDir + "/" + shortName + ".log";
@@ -52,6 +65,8 @@ void BinDep::writeLog(const string &message) {
 }
 
 vector<string> BinDep::getDeps() const { return m_deps; }
+
+bool BinDep::isElf() const { return m_isElf; }
 
 void BinDep::parseElfFile() {
   ifstream file(m_filename, std::ios::binary);

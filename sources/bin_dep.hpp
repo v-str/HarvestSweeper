@@ -24,6 +24,7 @@ private:
   void parseElfHeader();
   void readElfHeader_StrTab();
   void readElfHeader_DynStr();
+  void readElfDynInfo();
 
   void writeLog(const string &message);
 
@@ -32,7 +33,7 @@ private:
 
   string m_filename;
 
-  vector<string> m_deps;
+  vector<string> m_depsVector;
 
   ifstream m_fileStream;
   Elf64_Ehdr m_elfHeader;

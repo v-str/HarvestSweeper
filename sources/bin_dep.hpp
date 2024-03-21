@@ -12,7 +12,7 @@ using namespace std;
 class BinDep {
 public:
   BinDep(const string &filename);
-  ~BinDep() = default;
+  ~BinDep();
 
   vector<string> getDeps() const;
 
@@ -22,10 +22,13 @@ private:
   void parse();
   void parseElfFile();
   void parseElfHeader();
+  void readElfHeader_StrTab();
+  void readElfHeader_DynStr();
 
   void writeLog(const string &message);
 
   bool m_isElf = false;
+  bool m_isDynStrFound = false;
 
   string m_filename;
 

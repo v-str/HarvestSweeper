@@ -19,11 +19,22 @@ BinDep::BinDep(const string &filename)
   parse();
 }
 
+BinDep::~BinDep() {
+  if (m_fileStream.is_open()) {
+    m_fileStream.close();
+  }
+}
+
 void BinDep::parse() {
   parseElfHeader();
 
   if (m_isElf) {
-    
+    readElfHeader_StrTab();
+    readElfHeader_DynStr();
+
+    if (m_isDynStrFound) {
+      Logger::info("found .dynstr");
+    }
   }
 }
 
@@ -38,6 +49,45 @@ void BinDep::parseElfHeader() {
     writeLog(m_filename + " : " + "Not an ELF file");
   } else {
     m_isElf = true;
+  }
+}
+
+void BinDep::readElfHeader_StrTab() {
+  m_fileStream.seekg(m_elfHeader.e_shoff +
+                     (m_elfHeader.e_shentsize * m_elfHeader.e_shstrndx));
+  m_fileStream.read(reinterpret_cast<char *>(&m_sectionHeader_StrTab),
+                    sizeof(m_sectionHeader_StrTab));
+}
+
+void BinDep::readElfHeader_DynStr() {
+  m_fileStream.seekg(m_elfHeader.e_shoff);
+
+  streampos filePos;
+
+  for (auto i = 0; i < m_elfHeader.e_shnum; i++) {
+
+    m_fileStream.read(reinterpret_cast<char *>(&m_sectionHeader_DynStr),
+                      sizeof(m_sectionHeader_DynStr));
+
+    if (m_sectionHeader_DynStr.sh_type == SHT_STRTAB) {
+      filePos = m_fileStream.tellg();
+
+      m_fileStream.seekg(m_sectionHeader_StrTab.sh_offset +
+                         m_sectionHeader_DynStr.sh_name);
+
+      char rawName[10];
+      rawName[8] = 0;
+      m_fileStream.read(rawName, 8);
+
+      string sectionName(rawName);
+
+      if (sectionName.compare(".dynstr") == 0) {
+        m_isDynStrFound = true;
+        break;
+      } else {
+        m_isDynStrFound = false;
+      }
+    }
   }
 }
 
@@ -86,6 +136,8 @@ void BinDep::parseElfFile() {
     Logger::error("Not an ELF file: " + m_filename);
     return;
   }
+
+  // ****
 
   // read section header str table
   Elf64_Shdr Section_H_StrTab;

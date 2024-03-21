@@ -28,7 +28,8 @@ target_link_libraries(${PROJECT_NAME}_unit_test
                         ${Boost_PROGRAM_OPTIONS_LIBRARY}
                         ${Boost_JSON_LIBRARY}
                         gmock
-                        gcov)
+                        gcov
+                        elf)
 
 add_custom_target(coverage
     COMMAND ${PROJECT_NAME}_unit_test 

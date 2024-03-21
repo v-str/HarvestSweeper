@@ -14,6 +14,8 @@ public:
   vector<string> getDeps() const;
 
 private:
+  void parseElfFile();
+
   string m_filename;
   vector<string> m_deps;
 };

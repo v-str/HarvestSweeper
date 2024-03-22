@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 
 #include <algorithm>
+#include <filesystem>
 #include <iostream>
 #include <iterator>
 #include <ranges>
@@ -27,6 +28,15 @@ public:
     testMap["chown"] = "/usr/bin/chown";
   }
   ~SweeperTest() = default;
+
+  void recreateTestDir() {
+    auto fullpath = filesystem::current_path().string() + "/" + "test_dir";
+    if (filesystem::exists(fullpath)) {
+      filesystem::remove_all(fullpath);
+    }
+
+    filesystem::create_directories(fullpath);
+  }
 
   Sweeper sweeper;
   unordered_map<string, string> testMap;

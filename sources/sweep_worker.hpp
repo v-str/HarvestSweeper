@@ -2,6 +2,7 @@
 #define SWEEP_WORKER_HPP
 
 #include <filesystem>
+#include <iostream>
 #include <ranges>
 #include <string>
 #include <vector>
@@ -11,16 +12,16 @@
 
 using namespace std;
 
-static string spaces = "";
-
 template <typename ChunkView> class SweepWorker {
 public:
   SweepWorker(const string &outputDirPath, const ChunkView &chunkView)
       : m_outputDirPath(outputDirPath), m_chunkView(chunkView) {}
   ~SweepWorker() = default;
 
+  bool isErrorOccured() const { return m_isErrorOccured; }
+
   void run() {
-    if (!std::filesystem::exists(m_outputDirPath)) {
+    if (!filesystem::exists(m_outputDirPath)) {
       return;
     }
 
@@ -29,29 +30,43 @@ public:
       m_currentFile = key;
       m_currentFilePath = value;
 
-      findFileDependencies();
+      filesystem::path fullPath(m_outputDirPath + m_currentFilePath);
+      auto directoryPath = fullPath.parent_path();
+
+      try {
+        if (filesystem::exists(fullPath)) {
+          continue;
+        }
+
+        if (!filesystem::exists(directoryPath)) {
+          filesystem::create_directories(directoryPath);
+        }
+
+        filesystem::copy(m_currentFilePath, fullPath);
+      } catch (filesystem::filesystem_error &e) {
+        Logger::error(e.what());
+        m_isErrorOccured = true;
+        break;
+      }
+
+      processDependencies();
     }
   }
 
 private:
-  void findFileDependencies() {
-    /*
-    если файл m_currentFile существует в начальном каталоге
-      если файла не существует в конечном каталоге
-        узнать тип файла, бинарный или нет
-          если бинарный, то
-            найти зависимости этого файла и записать их в вектор
-
-
-
-    */
-
-    if (std::filesystem::exists(m_currentFilePath)) {
+  void processDependencies() {
+    if (filesystem::exists(m_currentFilePath)) {
       BinDep binDep(m_currentFilePath);
 
       if (binDep.isElf()) {
-        // Logger::info(spaces + "elf", m_currentFilePath);
-        spaces.push_back(' ');
+        auto depView = binDep.getView();
+
+        if (ranges::distance(depView) > 0) {
+          for (const auto &[key, value] : depView) {
+            SweepWorker<decltype(depView)> subWorker(m_outputDirPath, depView);
+            subWorker.run();
+          }
+        }
       }
     }
   }
@@ -61,6 +76,8 @@ private:
 
   string m_currentFile;
   string m_currentFilePath;
+
+  bool m_isErrorOccured = false;
 };
 
 #endif // SWEEP_WORKER_HPP

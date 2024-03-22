@@ -13,28 +13,73 @@
 using namespace testing;
 using namespace std;
 
-TEST(SweepWorker, CopyTree) {
-  unordered_map<string, string> testMap;
-  testMap["cp"] = "/usr/bin/cp";
-  testMap["ls"] = "/usr/bin/ls";
-  testMap["mkfs"] = "/usr/sbin/mkfs";
-  testMap["wget"] = "/usr/sbin/wget";
-  testMap["file"] = "/usr/bin/file";
-  testMap["more"] = "/usr/bin/more";
-  testMap["grep"] = "/usr/bin/grep";
-  testMap["cat"] = "/usr/bin/cat";
-  testMap["chmod"] = "/usr/bin/chmod";
-  testMap["chown"] = "/usr/bin/chown";
+class SweepWorkerTest : public Test {
+public:
+  SweepWorkerTest() {
+    testMap["cp"] = "/usr/bin/cp";
+    testMap["ls"] = "/usr/bin/ls";
+    testMap["mkfs"] = "/usr/sbin/mkfs";
+    testMap["wget"] = "/usr/sbin/wget";
+    testMap["file"] = "/usr/bin/file";
+    testMap["more"] = "/usr/bin/more";
+    testMap["grep"] = "/usr/bin/grep";
+    testMap["cat"] = "/usr/bin/cat";
+    testMap["chmod"] = "/usr/bin/chmod";
+    testMap["chown"] = "/usr/bin/chown";
+    testMap["chown"] = "/usr/bin/chown";
+  }
+  ~SweepWorkerTest() = default;
 
-  auto chunkView = testMap |
-                   views::transform([](const auto &pair) { return pair; }) |
-                   views::chunk(testMap.size() / 4);
+  unordered_map<string, string> testMap;
+};
+
+TEST_F(SweepWorkerTest, CopyTree) {
+  auto chunkView = testMap | views::all;
 
   string testDirPath = filesystem::current_path().string() + "/test_dir";
-  for (const auto &chunk : chunkView) {
-    SweepWorker worker(testDirPath, chunk);
-    worker.run();
-  }
+  filesystem::remove_all(testDirPath);
+  filesystem::create_directories(testDirPath);
 
-  EXPECT_EQ(1, 1);
+  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
+  worker.run();
+
+  ASSERT_FALSE(worker.isErrorOccured());
+}
+
+TEST_F(SweepWorkerTest, skipIfExists) {
+  auto chunkView = testMap | views::all;
+
+  string testDirPath = filesystem::current_path().string() + "/test_dir";
+
+  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
+  worker.run();
+
+  ASSERT_FALSE(worker.isErrorOccured());
+}
+
+TEST_F(SweepWorkerTest, fileIsNotExists) {
+  testMap["error"] = "/usr/bin/error123";
+
+  auto chunkView = testMap | views::all;
+
+  string testDirPath = filesystem::current_path().string() + "/test_dir";
+
+  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
+  worker.run();
+
+  ASSERT_TRUE(worker.isErrorOccured());
+}
+
+TEST_F(SweepWorkerTest, outputPathIsNotExists) {
+  testMap["error"] = "/usr/bin/error123";
+
+  auto chunkView = testMap | views::all;
+
+  string testDirPath = filesystem::current_path().string() + "/test_dir";
+  filesystem::remove_all(testDirPath);
+
+  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
+  worker.run();
+
+  ASSERT_FALSE(worker.isErrorOccured());
 }

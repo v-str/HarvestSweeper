@@ -42,7 +42,10 @@ public:
           filesystem::create_directories(directoryPath);
         }
 
-        filesystem::copy(m_currentFilePath, fullPath);
+        const auto copyOptions = filesystem::copy_options::update_existing |
+                                 filesystem::copy_options::recursive;
+
+        filesystem::copy(m_currentFilePath, fullPath, copyOptions);
       } catch (filesystem::filesystem_error &e) {
         Logger::error(e.what());
         m_isErrorOccured = true;

@@ -27,11 +27,26 @@ public:
     testMap["chmod"] = "/usr/bin/chmod";
     testMap["chown"] = "/usr/bin/chown";
     testMap["chown"] = "/usr/bin/chown";
+    testMap["fonts"] = "/etc/fonts";
   }
   ~SweepWorkerTest() = default;
 
   unordered_map<string, string> testMap;
 };
+
+TEST_F(SweepWorkerTest, outputPathIsNotExists) {
+  testMap["error"] = "/usr/bin/error123";
+
+  auto chunkView = testMap | views::all;
+
+  string testDirPath = filesystem::current_path().string() + "/test_dir";
+  filesystem::remove_all(testDirPath);
+
+  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
+  worker.run();
+
+  ASSERT_FALSE(worker.isErrorOccured());
+}
 
 TEST_F(SweepWorkerTest, CopyTree) {
   auto chunkView = testMap | views::all;
@@ -68,18 +83,4 @@ TEST_F(SweepWorkerTest, fileIsNotExists) {
   worker.run();
 
   ASSERT_TRUE(worker.isErrorOccured());
-}
-
-TEST_F(SweepWorkerTest, outputPathIsNotExists) {
-  testMap["error"] = "/usr/bin/error123";
-
-  auto chunkView = testMap | views::all;
-
-  string testDirPath = filesystem::current_path().string() + "/test_dir";
-  filesystem::remove_all(testDirPath);
-
-  SweepWorker<decltype(chunkView)> worker(testDirPath, chunkView);
-  worker.run();
-
-  ASSERT_FALSE(worker.isErrorOccured());
 }

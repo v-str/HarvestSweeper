@@ -1,8 +1,6 @@
 #include "bin_dep.hpp"
 
 #include <filesystem>
-#include <stdio.h>
-#include <string.h>
 
 #include "tools.hpp"
 
@@ -16,7 +14,7 @@ BinDep::BinDep(const string &filename)
     return;
   }
 
-  parse();
+  parseElfFile();
 }
 
 BinDep::~BinDep() {
@@ -25,7 +23,7 @@ BinDep::~BinDep() {
   }
 }
 
-void BinDep::parse() {
+void BinDep::parseElfFile() {
   parseElfHeader();
 
   if (m_isElf) {
@@ -123,10 +121,11 @@ void BinDep::readElfDynInfo() {
           m_fileStream.seekg(m_sectionHeader_DynStr.sh_offset +
                              m_sectionDynEntry.d_un.d_val);
 
-          string tempName;
-          getline(m_fileStream, tempName, '\0');
+          string depName;
+          getline(m_fileStream, depName, '\0');
 
-          m_depsVector.push_back(tempName);
+          addToMap(depName);
+
           m_fileStream.seekg(dynPos);
         }
       }
@@ -158,6 +157,18 @@ void BinDep::writeLog(const string &message) {
   }
 }
 
-vector<string> BinDep::getDeps() const { return m_depsVector; }
-
 bool BinDep::isElf() const { return m_isElf; }
+
+void BinDep::addToMap(const string &depName) {
+
+  string usr_lib_name = "/usr/lib/" + depName;
+
+  if (filesystem::exists(usr_lib_name)) {
+    m_map[depName] = usr_lib_name;
+  } else {
+    string usr_local_lib_name = "/usr/local/lib/" + depName;
+    if (filesystem::exists(usr_local_lib_name)) {
+      m_map[depName] = usr_local_lib_name;
+    }
+  }
+}

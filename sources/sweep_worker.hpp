@@ -11,6 +11,8 @@
 
 using namespace std;
 
+static string spaces = "";
+
 template <typename ChunkView> class SweepWorker {
 public:
   SweepWorker(const string &outputDirPath, const ChunkView &chunkView)
@@ -19,7 +21,6 @@ public:
 
   void run() {
     if (!std::filesystem::exists(m_outputDirPath)) {
-      Logger::error("Ошибка", m_outputDirPath + " не существует");
       return;
     }
 
@@ -49,6 +50,8 @@ private:
       BinDep binDep(m_currentFilePath);
 
       if (binDep.isElf()) {
+        // Logger::info(spaces + "elf", m_currentFilePath);
+        spaces.push_back(' ');
       }
     }
   }

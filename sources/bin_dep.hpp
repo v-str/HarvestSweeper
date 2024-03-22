@@ -6,6 +6,7 @@
 #include <fstream>
 #include <ranges>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -15,16 +16,12 @@ public:
   BinDep(const string &filename);
   ~BinDep();
 
-  vector<string> getDeps() const;
-
-  auto getView() const {
-    return views::iota(m_depsVector.begin(), m_depsVector.end());
-  }
-
   bool isElf() const;
 
+  auto getView() const { return m_map | views::all; }
+
 private:
-  void parse();
+  void addToMap(const string &depName);
   void parseElfFile();
   void parseElfHeader();
   void readElfHeader_StrTab();
@@ -38,7 +35,7 @@ private:
 
   string m_filename;
 
-  vector<string> m_depsVector;
+  unordered_map<string, string> m_map;
 
   ifstream m_fileStream;
   Elf64_Ehdr m_elfHeader;

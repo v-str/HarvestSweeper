@@ -28,11 +28,10 @@ TEST(SweepWorker, CopyTree) {
 
   auto chunkView = testMap |
                    views::transform([](const auto &pair) { return pair; }) |
-                   views::chunk(2);
+                   views::chunk(testMap.size() / 4);
 
   string testDirPath = filesystem::current_path().string() + "/test_dir";
   for (const auto &chunk : chunkView) {
-    Logger::normal("chunk");
     SweepWorker worker(testDirPath, chunk);
     worker.run();
   }

@@ -28,6 +28,7 @@ public:
     testMap["chown"] = "/usr/bin/chown";
     testMap["chown"] = "/usr/bin/chown";
     testMap["fonts"] = "/etc/fonts";
+    testMap["sensord"] = "/etc/conf.d/sensord";
   }
   ~SweepWorkerTest() = default;
 

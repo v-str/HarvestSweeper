@@ -4,6 +4,7 @@
 #include <ranges>
 #include <string>
 #include <unordered_map>
+#include <thread>
 
 #include "sweep_worker.hpp"
 #include "sweeper.hpp"

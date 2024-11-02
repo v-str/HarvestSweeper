@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     Sweeper sweeper(cmd.getInputFileName(), cmd.getOutputDirName());
 
     if (sweeper.isEverythingOk()) {
-      return 0;
+      sweeper.sweep();
     }
 
   } else {
